@@ -4,3 +4,4 @@ This is a WIP package designed to help with taking expectations of functions of 
 
 The underlying random variables are designed around the `Distributions.jl` interface. 
 
+This implementation is designed around v0.6. 
