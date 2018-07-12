@@ -4,7 +4,7 @@ include("../types.jl")
 """ 
 Generic function for calling an expectation of a function
 """
-function (E::Expectation{T})(f::Function) where {T}
+function (E::Expectation{T})(f::Function) where {T <: UnivariateDistribution}
 end 
 
 # Univariate Distributions 
@@ -27,6 +27,7 @@ function (E::Expectation{T})(f::Function = x -> x; tol = 1e-8) where {T <: Discr
         # Can revise this quadrature rule later. 
         val = 0 
         error = Inf 
+        sample = rand()
         while error > tol 
         end 
     end 
