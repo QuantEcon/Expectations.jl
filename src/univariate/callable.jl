@@ -2,16 +2,15 @@
 include("../types.jl")
 
 # Generic fallback 
-function (E::AbstractExpectation)(f::Function = x -> x) 
+function (E::Expectation{T})(f::Function = x -> x) where {T <: UnivariateDistribution} 
     # Could implement some generic LLN type logic here. 
 end 
 
-# Univariate Distributions 
+# Univariate distributions 
 """
 Method for generic discrete univariate distributions (finite or countable).
 """
-function (E::Expectation{T})(f::Function = x -> x) where {T <: DiscreteUnivariateDistribution}
-    # Switch on discreteness.  
+function (E::Expectation{T})(f::Function = x -> x; tol = 1e-8) where {T <: DiscreteUnivariateDistribution}
     finite = hasfinitesupport(E.D)
     if finite
         distsupport = support(E.D)
@@ -34,3 +33,4 @@ Method for generic continuous univariate distributions.
 function (E::Expectation{T})(f::Function = x -> x; tol = 1e-8) where {T <: ContinuousUnivariateDistribution}
 end 
 
+# Specific univariate distributions
