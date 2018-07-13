@@ -1,8 +1,5 @@
-# Define the behavior of an Expectation as a callable object. 
-include("../types.jl")
-
 # Generic fallback 
-function (E::Expectation{T})(f::Function = x -> x) where {T <: UnivariateDistribution} 
+function (E::Expectation{T})(f::Function = identity) where {T <: UnivariateDistribution}
     # Could implement some generic LLN type logic here. 
 end 
 
@@ -10,7 +7,7 @@ end
 """
 Method for generic discrete univariate distributions (finite or countable).
 """
-function (E::Expectation{T})(f::Function = x -> x; tol = 1e-8) where {T <: DiscreteUnivariateDistribution}
+function (E::Expectation{T})(f::Function = identity; kwargs...) where {T <: DiscreteUnivariateDistribution}
     finite = hasfinitesupport(E.D)
     if finite
         distsupport = support(E.D)
@@ -24,13 +21,50 @@ function (E::Expectation{T})(f::Function = x -> x; tol = 1e-8) where {T <: Discr
     else 
         # Use Lazy.jl? Can introduce quadrature rule later. 
         # Should probably call out to a special quadrature function. 
+        # Use `eltype` to get even more genericity out of this stuff. 
     end 
 end 
 
 """
-Method for generic continuous univariate distributions.
+Method for generic continuous univariate distributions. 
 """
-function (E::Expectation{T})(f::Function = x -> x; tol = 1e-8) where {T <: ContinuousUnivariateDistribution}
+function (E::Expectation{T})(f::Function = identity; kwargs...) where {T <: ContinuousUnivariateDistribution}
 end 
 
-# Specific univariate distributions
+# Specific univariate distributions. Implements specific quadrature rules from Maranda-Fackler. 
+"""
+Method for univariate normal distribution. 
+"""
+function (E::Expectation{T})(f::Function = identity; kwargs...) where {T <: Normal}
+end
+
+"""
+Method for univariate lognormal distribution. 
+"""
+function (E::Expectation{T})(f::Function = identity; kwargs...) where {T <: LogNormal}
+end
+
+"""
+Method for univariate (continuous) uniform distribution.
+"""
+function (E::Expectation{T})(f::Function = identity; kwargs...) where {T <: Uniform}
+    D = E.D
+    # Checks
+    @assert -Inf < D.a < Inf && -Inf < D.b < Inf "One or more bounds is infinite" # Technically, this isn't necessary, since typeof(Inf) <: Float64. But it's a good check.
+    @assert applicable(f, D.a) && applicable(*, 0.5, D.a) && applicable(sum, D.a) "f does not take floats into a space that can be dotted with probabilities"
+    # Compute and return.
+    return univariate_quad(D, f; kwargs...)
+end
+
+"""
+Method for univariate (discrete) uniform distribution.
+"""
+function (E::Expectation{T})(f::Function = identity; kwargs...) where {T <: DiscreteUniform}
+    D = E.D   
+    # Checks
+    @assert -Inf < D.a < Inf && -Inf < D.b < Inf "One or more bounds is infinite"
+    @assert applicable(f, D.a) && applicable(*, 0.2, f(D.a)) && applicable(sum, f(D.a)) "f does not take integers into a space that can be dotted with probabilities"
+    # Compute and return 
+    vals = f.(collect(D.a:1:D.b))
+    return D.pv * sum(vals)
+end
