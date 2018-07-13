@@ -1,11 +1,12 @@
 """
-A common supertype for all expectation operators.
+A common supertype for all objects in this package. 
 """
 abstract type AbstractExpectation end 
 
 """
-Parametric Expectation object for Distributions. 
+Expectation object for 
 """
-struct Expectation{T <: Distribution} <: AbstractExpectation
+struct CallableExpectation{T <: Distribution} <: AbstractExpectation
     D::T # The underlying distribution goes here. 
 end 
+
