@@ -1,7 +1,7 @@
 module Expectations
 
 # Load external dependencies. 
-using Distributions, Lazy
+using Distributions
 
 # Load internal files. 
 include("types.jl")
