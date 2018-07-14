@@ -2,7 +2,7 @@
     Generic non-linear methods (i.e., those without user-supplied nodes.)
 =#
 
-# Methods for general distributions under AdaptiveGaussian quadrature. 
+# Methods for continuous distributions under AdaptiveGaussian quadrature. 
 function _expectation(dist::D, alg::Q; n = 200, kwargs...) where {D <: ContinuousDistribution, Q <: AdaptiveGaussian}
     @assert length(dist) == 1 "The QuadGK implementation doesn't yet support integrating over high-dimensional spaces."
     # Get the nodes and weights.
@@ -15,12 +15,12 @@ function _expectation(dist::D, alg::Q; n = 200, kwargs...) where {D <: Continuou
     return Continuous(nodes, weights, func, alg)
 end
 
-# MethodError for general distributions under Gaussian quadrature 
+# MethodError for unsupported distributions under specialized quadrature 
 function _expectation(dist::D, alg::Q; kwargs...) where {D <: ContinuousDistribution, Q <: Gaussian}
     throw(ArgumentError("Specialized quadrature is not yet available for this distribution."))
 end 
 
-# MethodError for general distributions under FiniteDiscrete quadrature. 
+# MethodError for continuous distributions under FiniteDiscrete quadrature. 
 function _expectation(dist::D, alg::Q; kwargs...) where {D <: ContinuousDistribution, Q <: FiniteDiscrete}
     throw(ArgumentError("The Finite Difference algorithm is not supported for general continuous distributions."))
 end 
