@@ -1,3 +1,5 @@
+[![Travis status](https://travis-ci.org/econtoolkit/Expectations.jl.svg?branch=master)](https://travis-ci.org/econtoolkit/Expectations.jl)
+
 # Expectations
 
 This is a WIP package designed to help with taking expectations of functions of random variables (i.e., defining an expectation operator `E` that could be applied `Ef(X)`). 
