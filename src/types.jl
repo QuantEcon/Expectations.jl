@@ -20,7 +20,7 @@ struct ContinuousUnivariateExpectation <: AbstractContinuousExpectation
     func::Function
 end 
 
-struct IterableContinuousUnivariateExpectation{NT, WT} <: AbstractContinuousExpectation
+struct IterableContinuousUnivariateExpectation{NT, WT} <: AbstractIterableContinuousExpectation
     nodes::NT 
     weights::WT 
 end 
