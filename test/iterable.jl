@@ -25,7 +25,7 @@ E_3 = expectation(testDist3)
 # Test for normal. 
 testDist4 = Normal()
 E_4 = expectation(testDist4)
-@test_broken E_4(x -> abs(x)) ≈ sqrt(2/pi) atol = 1e-15 # Most of the weights come up 0, even for small numbers of points. 
+@test_broken E_4(x -> abs(x)) ≈ sqrt(2/pi) atol = 1e-8
 
 #= 
     Tests for some continuous distributions (nodes supplied.) 

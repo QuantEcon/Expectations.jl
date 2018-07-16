@@ -50,8 +50,8 @@ function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D
 end 
 
 # Specific method for normal distributions. 
-# This was be wildly inaccurate with 400 points
-function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D <: Normal}
+# Number of points was calibrated by trial.
+function _expectation(dist::D, alg::Type{Gaussian}; n = 24, kwargs...) where {D <: Normal}
     μ = mean(dist)
     σ_2 = var(dist)
     nodes, weights = qnwnorm(n, μ, σ_2)
@@ -59,7 +59,7 @@ function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D
 end 
 
 # Specific method for lognormal distributions. 
-function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D <: LogNormal}
+function _expectation(dist::D, alg::Type{Gaussian}; n = 23, kwargs...) where {D <: LogNormal}
 end 
 
 #= 
