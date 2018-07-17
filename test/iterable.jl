@@ -80,7 +80,8 @@ errorDist4 = Uniform(-Inf, Inf) # Degenerate uniform, Gauss-Legendre.
 testDist7 = Truncated(Normal(), -5, 5)
 z = -5:0.1:5
 E_7 = expectation(testDist7, z)
+E_8 = expectation(testDist7, z, Trapezoidal)
+@test E_7.nodes == E_8.nodes && E_7.weights == E_8.weights
 @test E_7(x -> x) ≈ mean(testDist7) atol = 1e-10
 squares = [x^2 for x in rand(testDist7, 10^7)]
 @test E_7(x -> x^2) ≈ mean(squares) atol = 1e-3
-

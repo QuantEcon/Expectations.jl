@@ -11,7 +11,7 @@ This is a package designed to simplify the process of taking expectations of fun
 
 ### Random Variables 
 
-The underlying distributions are `UnivariateDistribution` objects from `Distributions.jl`. 
+The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`)
 
 ### Expectation Operator
 

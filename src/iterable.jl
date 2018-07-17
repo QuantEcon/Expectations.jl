@@ -5,7 +5,7 @@
 # Callable behavior for the object. Parameters because we cannot add methods to an abstract type. 
 function (e::IterableExpectation{NT, WT})(f::Function; kwargs...) where {NT, WT}
     applicable(f, rand([e.nodes...])) || throw(MethodError("The function doesn't accept elements from the distribution's support."))
-    return dot(f.(e.nodes), e.weights; kwargs...) 
+    return f.(e.nodes)' * e.weights 
 end 
 
 # Getters for the object. 

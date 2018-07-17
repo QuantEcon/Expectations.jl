@@ -10,6 +10,6 @@ include("types.jl"),
 include("iterable.jl")
 
 # Export 
-export expectation, _expectation, Expectation, IterableExpectation, nodes, weights
+export expectation, _expectation, Expectation, IterableExpectation, Gaussian, Trapezoidal, FiniteDiscrete, QuadratureAlgorithm, ExplicitQuadratureAlgorithm, nodes, weights
 
 end # module
