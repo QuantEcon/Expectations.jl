@@ -13,6 +13,13 @@ This is a package designed to simplify the process of taking expectations of fun
 
 The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`)
 
+### Quadrature Algorithms
+
+There are two types of algorithm, `QuadratureAlgorithm` for algorithms which pick their own nodes, and 
+`ExplicitQuadratureAlgorithm` for ones where the user picks. Currently, the only concrete subtypes of 
+the former are `Gaussian` and `FiniteDiscrete`, and `Trapezoidal` for the latter (see "Mathematical Details")
+for the mathematical details. 
+
 ### Expectation Operator
 
 The package produces an expectation operators, `E`, as follows:
