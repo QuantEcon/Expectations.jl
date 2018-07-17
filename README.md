@@ -7,18 +7,18 @@ Installation:
 Pkg.clone("http://github.com/econtoolkit/Expectations.jl.git")
 ```
 
-This is a package designed to simplify the process of taking expectations of functions of random variables. The package is currently at **Julia v0.6**, and will break due to dependencies in v0.7
+This is a package designed to simplify the process of taking expectations of functions of random variables. The package is currently at **Julia v0.6**, and will break due to dependencies in v0.7.
 
 ### Random Variables 
 
-The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`)
+The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`).
 
 ### Quadrature Algorithms
 
 There are two types of algorithm, `QuadratureAlgorithm` for algorithms which pick their own nodes, and 
 `ExplicitQuadratureAlgorithm` for ones where the user picks. Currently, the only concrete subtypes of 
-the former are `Gaussian` and `FiniteDiscrete`, and `Trapezoidal` for the latter (see "Mathematical Details")
-for the mathematical details. 
+the former are `Gaussian` and `FiniteDiscrete`, and `Trapezoidal` for the latter (see "Mathematical Details"
+for the mathematical details). 
 
 ### Expectation Operator
 
