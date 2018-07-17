@@ -15,10 +15,9 @@ The underlying distributions are objects from `Distributions.jl` (currently `<:U
 
 ### Quadrature Algorithms
 
-There are two types of algorithm, `QuadratureAlgorithm` for algorithms which pick their own nodes, and 
+We have `QuadratureAlgorithm` for algorithms which pick their own nodes, and 
 `ExplicitQuadratureAlgorithm` for ones where the user picks. Currently, the only concrete subtypes of 
-the former are `Gaussian` and `FiniteDiscrete`, and `Trapezoidal` for the latter (see "Mathematical Details"
-for the mathematical details). 
+the former are `Gaussian` and `FiniteDiscrete`, and `Trapezoidal` for the latter.
 
 ### Expectation Operator
 
@@ -26,32 +25,28 @@ The package produces an expectation operators, `E`, as follows:
 
 ```julia
 dist = Normal()
-E = expectation(dist; kwargs...)
-```
+E = expectation(dist)
+E(x -> x)
 
-We can use these operators on functions as follows:
-
-```julia
-E(x -> x; kwargs...)
+E_morenodes = expectation(dist; n = 50) # Be careful, as too many nodes can introduce floating-point errors from miniscule exponents. 
 ```
 
 Expectations fall into a type hierarchy `IterableExpectation{NT, WT} <: IterableExpectation <: Expectation`
-Currently, only iterables are supported, and they are parametrized by `weights` and `nodes`, and can therefore be used as 
-follows:
+Currently, only iterables are supported, and they are parametrized by `weights` and `nodes`.
 
 ```julia
 h(x) = x^2 
-dot(E.weights, h.(E.nodes))
+dot(weights(E), h.(nodes(E)))
 ```
 
-Or as a linear operator, when defined with nodes:
+Or as a linear operator, either when you give your own nodes (or apply a function `h.(nodes(E))`):
 
 ```julia
 dist = Normal()
 z = -10:0.2:10
 h = (x -> x^2).(z)
-E = expectation(dist, nodes = z; kwargs...)
-E*h # is equal to dot(h, E.weights)
+E = expectation(dist, z; kwargs...)
+E*h # is equal to dot(h, weights(E))
 3E*h # is equal to 3(E*h) and (3E)*h
 ```
 

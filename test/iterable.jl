@@ -10,16 +10,16 @@ E_1 = expectation(testDist)
 
 # Test for linear operator behavior. 
 h(x) = 2*x
-z = E_1.nodes
+z = nodes(E_1)
 @test E_1 * h.(z) == E_1(x -> 2*x) # Right-multiplying only. 
-@test 2E_1.weights == 2*E_1.weights# Left-multiplying only. 
+@test weights(2E_1) == 2*weights(E_1) # Left-multiplying only. 
 @test 3E_1*z == (3E_1) * z == 3*(E_1 * z) # Linearity. 
 
 # Test for error handling. 
 testDist2 = Poisson(3)
 @test_throws MethodError expectation(testDist2) # Catches unbounded distributions. 
 @test_throws MethodError E_1(x -> dot(x, ones(7))) # Test for non-applicable functions. 
-@test_throws DimensionMismatch h.(z) * E_1.nodes # Test non-commutativity of operator. 
+@test_throws DimensionMismatch h.(z) * nodes(E_1) # Test non-commutativity of operator. 
 
 #= 
     Tests for some continuous distributions (no nodes supplied.)
@@ -76,12 +76,20 @@ errorDist4 = Uniform(-Inf, Inf) # Degenerate uniform, Gauss-Legendre.
     Tests for some continuous distributions (nodes supplied.) 
 =#
 
-# Test trapezoidal for truncated normal. 
+# Test trapezoidal for truncated normal. (REGULAR)
 testDist7 = Truncated(Normal(), -5, 5)
 z = -5:0.1:5
 E_7 = expectation(testDist7, z)
 E_8 = expectation(testDist7, z, Trapezoidal)
-@test E_7.nodes == E_8.nodes && E_7.weights == E_8.weights
+@test nodes(E_7) == nodes(E_8) && weights(E_7) == weights(E_8)
 @test E_7(x -> x) ≈ mean(testDist7) atol = 1e-10
 squares = [x^2 for x in rand(testDist7, 10^7)]
 @test E_7(x -> x^2) ≈ mean(squares) atol = 1e-3
+
+# Test irregular trapezoidal.
+z = unique([linspace(-5, 0, 100)' linspace(0, 5, 200)'])
+E_9 = expectation(testDist7, z)
+E_10 = expectation(testDist7, z, Trapezoidal)
+@test nodes(E_9) == nodes(E_10) && weights(E_9) == weights(E_10)
+@test E_9(x -> x) ≈ mean(testDist7) atol = 1e-4
+@test E_9(x -> x^2) ≈ mean(squares) atol = 1e-3

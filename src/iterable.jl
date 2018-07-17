@@ -4,8 +4,8 @@
 
 # Callable behavior for the object. Parameters because we cannot add methods to an abstract type. 
 function (e::IterableExpectation{NT, WT})(f::Function; kwargs...) where {NT, WT}
-    applicable(f, rand([e.nodes...])) || throw(MethodError("The function doesn't accept elements from the distribution's support."))
-    return f.(e.nodes)' * e.weights 
+    applicable(f, rand(nodes(e))) || throw(MethodError("The function doesn't accept elements from the distribution's support."))
+    return dot(f.(nodes(e)), weights(e))
 end 
 
 # Getters for the object. 
@@ -17,12 +17,12 @@ import Base.*
 
 # Right-multiplying an expectation by something. 
 function *(e::IterableExpectation, h::AbstractArray)
-    return h' * weights(e)
+    return dot(h, weights(e))
 end 
 
 # Left-multiplying an expectation by a scalar.
 function *(r::Real, e::IterableExpectation)
-    return IterableExpectation(e.nodes, r * e.weights) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
+    return IterableExpectation(nodes(e), r * weights(e)) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
 end
 
 #= 
@@ -87,8 +87,6 @@ function _expectation(dist::D, alg::Type{Gaussian}; n = 20, kwargs...) where {D 
     return IterableExpectation(nodes, weights)
 end 
 
-
-
 #= 
     Continuous iterable distributions (nodes supplied.)
 =#
@@ -99,13 +97,22 @@ function expectation(dist::D, nodes::NT, alg::Type{<:ExplicitQuadratureAlgorithm
 end
 
 # Trapezoidal general behavior. 
-function _expectation(dist, nodes, alg::Type{Trapezoidal}; kwargs...)
+function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs...)
     M = length(nodes)
     Δ = diff(nodes)
     prepend!(Δ, NaN) # To keep the indexing straight. Now, Δ[2] = Δ_2 = z_2 - z_1. And NaN will throw an error if we try to use it.
-    f = x -> pdf(dist, x)
-    f_vec = f.(nodes)
+    f_vec = pdf.(dist, nodes)
     interiorWeights = [f_vec[i]/2 * (Δ[i] + Δ[i+1]) for i = 2:M-1]
     allWeights = [f_vec[1]/2 * Δ[2]; interiorWeights; f_vec[M]/2 * Δ[M]]
     return IterableExpectation(nodes, allWeights)
+end 
+
+# Trapezoidal for regular. 
+function _expectation(dist, nodes::StepRangeLen, alg::Type{Trapezoidal}; kwargs...)
+    (first(nodes) >= minimum(dist) && last(nodes) <= maximum(dist)) || throw(ArgumentError("The nodes exceed the distribution's support."))
+    M = length(nodes)
+    Δ = nodes[2] - nodes[1]
+    f_vec = pdf.(dist, nodes)
+    weights = Δ/2 * [f_vec[i] * ((i > 1 && i < M) ? 2 : 1) for i in 1:M]
+    return IterableExpectation(nodes, weights)
 end 
