@@ -28,7 +28,9 @@ We can use these operators on functions as follows:
 E(x -> x; kwargs...)
 ```
 
-Expectations are parametrized by `weights` and `nodes`, and can therefore be used as follows:
+Expectations fall into a type hierarchy `IterableExpectation{NT, WT} <: IterableExpectation <: Expectation`
+Currently, only iterables are supported, and they are parametrized by `weights` and `nodes`, and can therefore be used as 
+follows:
 
 ```julia
 h(x) = x^2 
