@@ -56,7 +56,7 @@ function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D
     b = maximum(dist)
     (a > -Inf && b < Inf) || throw(MethodError("The distribution must be defined on a compact interval."))
     nodes, weights = qnwlege(n, a, b)
-    weights = [weights[i] * pdf(dist, nodes[i]) for i in 1:length(nodes)]
+    weights = weights .* pdf.(Ref(dist), nodes)
     return IterableExpectation(nodes, weights);
 end 
 
@@ -101,7 +101,7 @@ function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs
     M = length(nodes)
     Δ = diff(nodes)
     prepend!(Δ, NaN) # To keep the indexing straight. Now, Δ[2] = Δ_2 = z_2 - z_1. And NaN will throw an error if we try to use it.
-    f_vec = pdf.(dist, nodes)
+    f_vec = pdf.(Ref(dist), nodes)
     interiorWeights = [f_vec[i]/2 * (Δ[i] + Δ[i+1]) for i = 2:M-1]
     allWeights = [f_vec[1]/2 * Δ[2]; interiorWeights; f_vec[M]/2 * Δ[M]]
     return IterableExpectation(nodes, allWeights)
@@ -112,7 +112,7 @@ function _expectation(dist, nodes::StepRangeLen, alg::Type{Trapezoidal}; kwargs.
     (first(nodes) >= minimum(dist) && last(nodes) <= maximum(dist)) || throw(ArgumentError("The nodes exceed the distribution's support."))
     M = length(nodes)
     Δ = nodes[2] - nodes[1]
-    f_vec = pdf.(dist, nodes)
+    f_vec = pdf.(Ref(dist), nodes)
     weights = Δ/2 * [f_vec[i] * ((i > 1 && i < M) ? 2 : 1) for i in 1:M]
     return IterableExpectation(nodes, weights)
 end 
