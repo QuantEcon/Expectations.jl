@@ -1,3 +1,5 @@
+# __precompile__(true)
+
 module Expectations
 
 # Load external dependencies. 
@@ -8,6 +10,6 @@ include("types.jl"),
 include("iterable.jl")
 
 # Export 
-export expectation, Expectation, IterableExpectation
+export expectation, _expectation, Expectation, IterableExpectation, nodes, weights
 
 end # module

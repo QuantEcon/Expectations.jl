@@ -17,16 +17,62 @@ testDist2 = Poisson(3)
     Tests for some continuous distributions (no nodes supplied.)
 =#
 
-# Test callable behavior for truncated normal. (Gauss-Legendre)
+# Test Gauss-Legendre catchall for truncated normal. 
 testDist3 = Truncated(Normal(0.5), 0, 10)
 E_3 = expectation(testDist3)
-@test E_3(x -> x) ≈ 1.0091604338370335
+@test E_3(x -> x) ≈ mean(testDist3) # Mean from mean(d::TruncatedNormal) in Distributions. 
+squares = [x^2 for x in rand(testDist3, 10000000)] # 10^7
+@test E_3(x -> x^2) ≈ mean(squares) atol = 1e-3
+
+# Test Gauss-Legendre catchall for arcsine distribution. 
+glTestDist = Arcsine()
+E_gl = expectation(glTestDist)
+@test E_gl(x -> x) ≈ mean(glTestDist) atol = 1e-3
+squares = [x^2 for x in rand(glTestDist, 10000000)]
+@test E_gl(x -> x^2) ≈ mean(squares) atol = 1e-3
 
 # Test for normal. 
 testDist4 = Normal()
 E_4 = expectation(testDist4)
-@test_broken E_4(x -> abs(x)) ≈ sqrt(2/pi) atol = 1e-8
+@test E_4(x -> sin(x)^2) ≈ 0.4320336833225541 atol = 1e-3 # From LLN average on 1 million points.
+
+# Test for lognormal. 
+testDist5 = LogNormal()
+E_5 = expectation(testDist5)
+@test E_5(x -> x) ≈ mean(testDist5) # Mean from mean (d::LogNormal) in Distributions. 
+samples = rand(testDist5, 10000000) # 10^7 samples. 
+sines = map(x -> sin(x)^3, samples)
+@test_broken E_5(x -> sin(x)^3) ≈ sines # Broken for this kind of function. LLN n = 10^7. 
+squares = map(x -> x^2, samples)
+@test_broken E_5(x -> x^2) ≈ mean(squares) atol = 1e-4 
+
+# Test for beta.
+testDist6 = Beta()
+E_6 = expectation(testDist6)
+@test E_6(x -> x) ≈ mean(testDist6) # Mean from mean(d::LogNormal) in Distributions. 
+samples = rand(testDist6, 10000000) # 10^7 samples.
+squares = map(x -> x^2, samples)
+@test E_6(x -> x^2) ≈ mean(squares) atol = 1e-3 # Allow for LLN error. 
+
+# Test error handling 
+errorDist1 = Beta(Inf) # Beta Gaussian
+@test_throws MethodError expectation(errorDist1)
+errorDist2 = LogNormal(Inf, Inf) # LogNormal Gaussian
+@test_throws MethodError expectation(errorDist2)
+errorDist3 = Normal(0, Inf) # Normal Gaussian
+@test_throws MethodError expectation(errorDist3)
+errorDist4 = Uniform(-Inf, Inf) # Degenerate uniform, Gauss-Legendre. 
+@test_throws MethodError expectation(errorDist4)
 
 #= 
     Tests for some continuous distributions (nodes supplied.) 
 =#
+
+# Test trapezoidal for truncated normal. 
+testDist7 = Truncated(Normal(), -5, 5)
+z = -5:0.1:5
+E_7 = expectation(testDist7, z)
+@test E_7(x -> x) ≈ mean(testDist7) atol = 1e-10
+squares = [x^2 for x in rand(testDist7, 10^7)]
+@test E_7(x -> x^2) ≈ mean(squares) atol = 1e-3
+
