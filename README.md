@@ -45,6 +45,7 @@ z = -10:0.2:10
 h = (x -> x^2).(z)
 E = expectation(dist, nodes = z; kwargs...)
 E*h # is equal to dot(h, E.weights)
+3E*h # is equal to 3(E*h) and (3E)*h
 ```
 
 ### Mathematical Details

@@ -12,7 +12,18 @@ end
 nodes(e::IterableExpectation) = e.nodes 
 weights(e::IterableExpectation) = e.weights 
 
-# Linear operator behavior (TBD).
+# Linear operator behavior.
+import Base.*
+
+# Right-multiplying an expectation by something. 
+function *(e::IterableExpectation, h::AbstractArray)
+    return h' * weights(e)
+end 
+
+# Left-multiplying an expectation by a scalar.
+function *(r::Real, e::IterableExpectation)
+    return IterableExpectation(e.nodes, r * e.weights) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
+end
 
 #= 
     Discrete iterable expectations. 

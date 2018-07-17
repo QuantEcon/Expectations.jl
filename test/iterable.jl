@@ -8,10 +8,18 @@ E_1 = expectation(testDist)
 @test E_1(x -> x) ≈ 5.5
 @test E_1(x -> x^2) ≈ 38.5
 
+# Test for linear operator behavior. 
+h(x) = 2*x
+z = E_1.nodes
+@test E_1 * h.(z) == E_1(x -> 2*x) # Right-multiplying only. 
+@test 2E_1.weights == 2*E_1.weights# Left-multiplying only. 
+@test 3E_1*z == (3E_1) * z == 3*(E_1 * z) # Linearity. 
+
 # Test for error handling. 
 testDist2 = Poisson(3)
 @test_throws MethodError expectation(testDist2) # Catches unbounded distributions. 
 @test_throws MethodError E_1(x -> dot(x, ones(7))) # Test for non-applicable functions. 
+@test_throws DimensionMismatch h.(z) * E_1.nodes # Test non-commutativity of operator. 
 
 #= 
     Tests for some continuous distributions (no nodes supplied.)
