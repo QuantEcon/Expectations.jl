@@ -18,7 +18,7 @@ z = nodes(E_1)
 # Test for error handling. 
 testDist2 = Poisson(3)
 @test_throws MethodError expectation(testDist2) # Catches unbounded distributions. 
-@test_throws MethodError E_1(x -> dot(x, ones(7))) # Test for non-applicable functions. 
+@test_throws Exception E_1(x -> dot(x, ones(7))) # Test for non-applicable functions. MethodError on 0.6, DimensionMismatch on 0.7. 
 @test_throws DimensionMismatch h.(z) * nodes(E_1) # Test non-commutativity of operator. 
 
 #= 

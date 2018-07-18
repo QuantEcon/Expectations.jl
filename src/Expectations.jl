@@ -3,7 +3,8 @@
 module Expectations
 
 # Load external dependencies. 
-using Distributions, QuantEcon, QuadGK
+using Distributions, QuantEcon, QuadGK, Compat
+using Compat.LinearAlgebra
 
 # Load internal files. 
 include("types.jl"),

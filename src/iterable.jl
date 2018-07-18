@@ -37,7 +37,7 @@ end
 function _expectation(dist::D, alg::Type{FiniteDiscrete}; kwargs...) where {D <: DiscreteUnivariateDistribution}
     hasfinitesupport(dist) || throw(MethodError("Countably infinite distributions are not supported."))
     ourSupport = support(dist)
-    ourWeights = pdf.(dist, support(dist))
+    ourWeights = pdf.(Ref(dist), support(dist))
     sum(ourWeights) ≈ 1.0 || warn("The distribution supplied is not approximately equal to 1 in mass.")
     return IterableExpectation(ourSupport, ourWeights);
 end 
@@ -108,7 +108,7 @@ function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs
 end 
 
 # Trapezoidal for regular. 
-function _expectation(dist, nodes::StepRangeLen, alg::Type{Trapezoidal}; kwargs...)
+@compat function _expectation(dist, nodes::StepRangeLen, alg::Type{Trapezoidal}; kwargs...)
     (first(nodes) >= minimum(dist) && last(nodes) <= maximum(dist)) || throw(ArgumentError("The nodes exceed the distribution's support."))
     M = length(nodes)
     Δ = nodes[2] - nodes[1]
