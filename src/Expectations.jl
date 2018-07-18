@@ -3,8 +3,9 @@
 module Expectations
 
 # Load external dependencies. 
-using Distributions, QuantEcon, QuadGK, Compat
+using Distributions, QuadGK, Compat, FastGaussQuadrature
 using Compat.LinearAlgebra
+using Compat.MathConstants
 
 # Load internal files. 
 include("types.jl"),

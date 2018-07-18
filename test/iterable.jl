@@ -72,6 +72,14 @@ errorDist3 = Normal(0, Inf) # Normal Gaussian
 errorDist4 = Uniform(-Inf, Inf) # Degenerate uniform, Gauss-Legendre. 
 @test_throws MethodError expectation(errorDist4)
 
+# Test some more distributions
+E_exp = expectation(Exponential())
+E_beta = expectation(Beta())
+E_gamma = expectation(Gamma())
+@test E_exp(x -> x) ≈ mean(Exponential())
+@test E_beta(x -> x) ≈ mean(Beta())
+@test E_gamma(x -> x) ≈ mean(Gamma())
+
 #= 
     Tests for some continuous distributions (nodes supplied.) 
 =#

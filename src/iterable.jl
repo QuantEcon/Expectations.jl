@@ -55,35 +55,72 @@ function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D
     a = minimum(dist)
     b = maximum(dist)
     (a > -Inf && b < Inf) || throw(MethodError("The distribution must be defined on a compact interval."))
-    nodes, weights = qnwlege(n, a, b)
-    weights = weights .* pdf.(Ref(dist), nodes)
+    rawNodes, rawWeights = gausslegendre(n)
+    # Transform nodes to proper interval. 
+    nodes = map(x -> (0.5(b-a))*x + (a+b)/2, rawNodes)
+    # Add pdf to weights. 
+    compoundWeights = [rawWeights[i] * pdf(dist, nodes[i]) for i in 1:n]
+    # Add scale factor to weights.
+    weights = (b-a)/2 * compoundWeights
     return IterableExpectation(nodes, weights);
-end 
+end
 
 # Specific method for normal distributions. 
 # Number of points was calibrated by trial.
 function _expectation(dist::D, alg::Type{Gaussian}; n = 30, kwargs...) where {D <: Normal}
+    σ = std(dist)
     μ = mean(dist)
-    σ_2 = var(dist)
-    (isfinite(μ) && isfinite(σ_2)) || throw(MethodError("Infinite μ or σ^2 are not supported."))
-    nodes, weights = qnwnorm(n, μ, σ_2)
+    (isfinite(σ) && isfinite(μ)) || throw(MethodError("Parameters σ, μ must be finite."))
+    gh = gausshermite(n)
+    nodes = gh[1].*(sqrt(2)*(σ + μ))
+    weights = gh[2]./sqrt(pi)
     return IterableExpectation(nodes, weights)
 end 
 
 # Specific method for lognormal distributions. 
-function _expectation(dist::D, alg::Type{Gaussian}; n = 100, kwargs...) where {D <: LogNormal} # Same settings for the normal method, since this calls qnwnorm in QuantEcon. 
-    μ = mean(dist)
-    σ_2 = var(dist)
-    (isfinite(μ) && isfinite(σ_2)) || throw(MethodError("Infinite μ or σ^2 are not supported."))
-    nodes, weights = qnwlogn(n, μ, σ_2)
-    return IterableExpectation(log.(nodes), weights) # Transform the output. 
+function _expectation(dist::D, alg::Type{Gaussian}; n = 10, kwargs...) where {D <: LogNormal} # Same settings for the normal method.
+    m = mean(dist)
+    v = var(dist)
+    (isfinite(m) && isfinite(v)) || throw(MethodError("Infinite μ or σ^2 are not supported."))
+    # get normal nodes
+    gh = gausshermite(n)
+    μ = log(m^2/sqrt(v + m^2))
+    σ = sqrt(log(v/m^2 + 1))
+    nodes = gh[1].*(sqrt(2)*(σ + μ))
+    weights = gh[2]./sqrt(pi)
+    # get new nodes 
+    map!(x -> exp(x), nodes, nodes)
+    return IterableExpectation(nodes, weights) # Transform the output. 
 end 
 
 # Specific method for beta distributions. 
-function _expectation(dist::D, alg::Type{Gaussian}; n = 20, kwargs...) where {D <: Beta} # Same settings for the normal method, since this calls qnwnorm in QuantEcon. 
+function _expectation(dist::D, alg::Type{Gaussian}; n = 32, kwargs...) where {D <: Beta} 
     α, β = params(dist)
     (isfinite(α) && isfinite(β)) || throw(MethodError("The beta distribution supplied is malformed."))
-    nodes, weights = qnwbeta(n, α, β)
+    gj = FastGaussQuadrature.JacobiRec(n, α-1, β-1)
+    G = gamma(α)*gamma(β)/gamma(α+β)
+    nodes = (1 .- gj[1])/2
+    weights = gj[2]/((2.0^(α+β-1.0))*G)
+    return IterableExpectation(nodes, weights)
+end 
+
+# Specific method for exponential distributions. 
+function _expectation(dist::D, alg::Type{Gaussian}; n = 32, kwargs...) where {D <: Exponential} 
+    θ = params(dist)[1]
+    isfinite(θ) || throw(MethodError("The beta distribution supplied is malformed."))
+    gl = gausslaguerre(n)
+    nodes = gl[1]./θ
+    weights = gl[2]
+    return IterableExpectation(nodes, weights)
+end 
+
+# Specific method for gamma distributions. 
+function _expectation(dist::D, alg::Type{Gaussian}; n = 32, kwargs...) where {D <: Gamma} 
+    α, θ = params(dist)
+    (isfinite(θ) && isfinite(θ)) || throw(MethodError("The beta distribution supplied is malformed."))
+    gl = gausslaguerre(n, α-1)    
+    nodes = gl[1]./θ
+    weights = gl[2]./gamma(α)
     return IterableExpectation(nodes, weights)
 end 
 

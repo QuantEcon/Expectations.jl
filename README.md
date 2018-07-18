@@ -55,8 +55,7 @@ E*h # is equal to dot(h, weights(E))
 For finite discrete distributions, we simply compute the precise expectation. For 
 continuous distributions given without nodes, we use some form of Gaussian quadrature
 (either Gauss-Legendre, or a distribution-specific form for common distributions). These
-distribution-specific algorithms are derived from `QuantEcon.jl`, who implemented them as 
-defined in Miranda and Fackler's `CompEcon` toolbox. 
+distribution-specific algorithms are derived from `FastGaussQuadrature.jl`.
 
 The default for distributions with nodes (and currently the only supported algorithm) is 
 trapezoidal quadrature. 
