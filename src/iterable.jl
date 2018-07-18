@@ -145,7 +145,7 @@ function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs
 end 
 
 # Trapezoidal for regular. 
-@compat function _expectation(dist, nodes::StepRangeLen, alg::Type{Trapezoidal}; kwargs...)
+@compat function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
     (first(nodes) >= minimum(dist) && last(nodes) <= maximum(dist)) || throw(ArgumentError("The nodes exceed the distribution's support."))
     M = length(nodes)
     Δ = nodes[2] - nodes[1]
