@@ -47,9 +47,9 @@ E_tri = expectation(triTestDist, n = 1000)
 # Test for normal. 
 testDist4 = Normal()
 E_4 = expectation(testDist4)
-@test E_4(x -> x) ≈ 0.0 atol = 1e-16 # First moment. 
-@test E_4(x -> x^2) ≈ 1.0 atol = 1e-16 # Second moment. 
-@test E_4(x -> x^3) ≈ 0.0 atol = 1e-16 # Third moment. 
+@test E_4(x -> x) ≈ 0.0 atol = 1e-12 # First moment. 
+@test E_4(x -> x^2) ≈ 1.0 atol = 1e-12 # Second moment. 
+@test E_4(x -> x^3) ≈ 0.0 atol = 1e-12 # Third moment. 
 
 # Test for lognormal. 
 testDist5 = LogNormal()
@@ -57,9 +57,9 @@ E_5 = expectation(testDist5)
 mean5 = mean(testDist5)
 var5 = var(testDist5)
 skew5 = skewness(testDist5)
-@test E_5(identity) ≈ mean5 atol = 1e-16  # First moment. 
-@test E_5(x -> (x-mean5)^2) ≈ var5 atol = 1e-16  # Second moment. 
-@test E_5(x -> ((x-mean5)/sqrt(var5))^3) ≈ skew5 atol = 1e-16  # Third moment. 
+@test E_5(identity) ≈ mean5 atol = 1e-12  # First moment. 
+@test E_5(x -> (x-mean5)^2) ≈ var5 atol = 1e-12  # Second moment. 
+@test E_5(x -> ((x-mean5)/sqrt(var5))^3) ≈ skew5 atol = 1e-12  # Third moment. 
 
 # Test for beta.
 testDist6 = Beta()
@@ -67,9 +67,9 @@ E_6 = expectation(testDist6)
 mean6 = mean(testDist6)
 var6 = var(testDist6)
 skew6 = skewness(testDist6)
-@test E_6(identity) ≈ mean6 atol = 1e-16  # First moment. 
-@test E_6(x -> (x-mean6)^2) ≈ var6 atol = 1e-16  # Second moment. 
-@test E_6(x -> ((x-mean6)/sqrt(var6))^3) ≈ skew6 atol = 1e-16  # Third moment. 
+@test E_6(identity) ≈ mean6 atol = 1e-12  # First moment. 
+@test E_6(x -> (x-mean6)^2) ≈ var6 atol = 1e-12  # Second moment. 
+@test E_6(x -> ((x-mean6)/sqrt(var6))^3) ≈ skew6 atol = 1e-12  # Third moment. 
 
 # Test error handling 
 errorDist1 = Beta(Inf) # Beta Gaussian
@@ -95,12 +95,12 @@ skew_gamma = skewness(gammaDist)
 E_exp = expectation(expDist)
 E_gamma = expectation(Gamma())
 
-@test E_exp(x -> x) ≈ mean_exp atol = 1e-16 
-@test E_gamma(x -> x) ≈ mean_gamma atol = 1e-16 
-@test E_exp(x -> (x-1.0)^2) ≈ var_exp atol = 1e-16 
-@test E_gamma(x -> (x-1.0)^2) ≈ var_gamma atol = 1e-16 
-@test E_exp(x -> ((x-mean_exp)/sqrt(var_exp))^3) ≈ skew_exp atol = 1e-16 
-@test E_gamma(x -> ((x-mean_gamma)/sqrt(var_gamma))^3) ≈ skew_gamma atol = 1e-16 
+@test E_exp(x -> x) ≈ mean_exp atol = 1e-12 
+@test E_gamma(x -> x) ≈ mean_gamma atol = 1e-12 
+@test E_exp(x -> (x-1.0)^2) ≈ var_exp atol = 1e-12 
+@test E_gamma(x -> (x-1.0)^2) ≈ var_gamma atol = 1e-12 
+@test E_exp(x -> ((x-mean_exp)/sqrt(var_exp))^3) ≈ skew_exp atol = 1e-12 
+@test E_gamma(x -> ((x-mean_gamma)/sqrt(var_gamma))^3) ≈ skew_gamma atol = 1e-12 
 
 #= 
     Tests for some continuous distributions (nodes supplied.) 
