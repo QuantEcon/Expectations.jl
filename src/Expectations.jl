@@ -5,7 +5,7 @@ module Expectations
 # Load external dependencies. 
 using Distributions, Compat, FastGaussQuadrature
 using Compat.LinearAlgebra
-using Compat.MathConstants
+using SpecialFunctions
 
 # Load internal files. 
 include("types.jl"),

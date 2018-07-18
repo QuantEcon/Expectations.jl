@@ -51,7 +51,7 @@ function expectation(dist::D, alg::Type{<:QuadratureAlgorithm} = Gaussian; kwarg
     return _expectation(dist, alg; kwargs...)
 end 
 
-function _expectation(dist::D, alg::Type{Gaussian}; n = 400, kwargs...) where {D <: ContinuousUnivariateDistribution}
+function _expectation(dist::D, alg::Type{Gaussian}; n = 500, kwargs...) where {D <: ContinuousUnivariateDistribution}
     a = minimum(dist)
     b = maximum(dist)
     (a > -Inf && b < Inf) || throw(MethodError("The distribution must be defined on a compact interval."))
@@ -78,7 +78,7 @@ function _expectation(dist::D, alg::Type{Gaussian}; n = 30, kwargs...) where {D 
 end 
 
 # Specific method for lognormal distributions. 
-function _expectation(dist::D, alg::Type{Gaussian}; n = 10, kwargs...) where {D <: LogNormal} # Same settings for the normal method.
+function _expectation(dist::D, alg::Type{Gaussian}; n = 30, kwargs...) where {D <: LogNormal} # Same settings for the normal method.
     m = mean(dist)
     v = var(dist)
     (isfinite(m) && isfinite(v)) || throw(MethodError("Infinite μ or σ^2 are not supported."))
@@ -150,6 +150,7 @@ end
     M = length(nodes)
     Δ = nodes[2] - nodes[1]
     f_vec = pdf.(Ref(dist), nodes)
-    weights = Δ/2 * [f_vec[i] * ((i > 1 && i < M) ? 2 : 1) for i in 1:M]
-    return IterableExpectation(nodes, weights)
+    interiorWeights = [f_vec[i] * Δ for i = 2:M-1]
+    allWeights = [f_vec[1]/2 * Δ; interiorWeights; f_vec[M]/2 * Δ]
+    return IterableExpectation(nodes, allWeights)
 end 
