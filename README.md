@@ -1,5 +1,7 @@
 [![Travis status](https://travis-ci.org/econtoolkit/Expectations.jl.svg?branch=master)](https://travis-ci.org/econtoolkit/Expectations.jl)
 
+[![Travis 0.7]()
+
 # Expectations
 
 Installation:
@@ -7,7 +9,7 @@ Installation:
 Pkg.add("Expectations")
 ```
 
-This is a package designed to simplify the process of taking expectations of functions of random variables. The package is currently at **Julia v0.6**, and will break due to dependencies in v0.7.
+This is a package designed to simplify the process of taking expectations of functions of random variables. The package is compatible with Julia v0.6 and Julia v0.7. 
 
 ### Random Variables 
 
