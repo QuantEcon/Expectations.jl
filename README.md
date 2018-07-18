@@ -4,7 +4,7 @@
 
 Installation:
 ```julia
-Pkg.clone("http://github.com/econtoolkit/Expectations.jl.git")
+Pkg.add("Expectations")
 ```
 
 This is a package designed to simplify the process of taking expectations of functions of random variables. The package is currently at **Julia v0.6**, and will break due to dependencies in v0.7.
