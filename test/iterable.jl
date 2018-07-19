@@ -122,3 +122,8 @@ E_10 = expectation(testDist7, z, Trapezoidal)
 @test nodes(E_9) == nodes(E_10) && weights(E_9) == weights(E_10)
 @test E_9(x -> x) ≈ mean(testDist7) atol = 1e-8
 @test E_9(x -> x^2) ≈ var(testDist7) atol = 1e-5
+
+# Test convenience functions. 
+@test expectation(x -> x, testDist7, z) == E_7(x -> x) # Grid one. 
+@test expectation(x -> x, testDist4) == E_4(x -> x) # Standard normal/Gaussian continuous. 
+@test expectation(x -> x, testDist) == E_1(x -> x) # Discrete one. 
