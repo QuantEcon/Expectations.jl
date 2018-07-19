@@ -124,6 +124,6 @@ E_10 = expectation(testDist7, z, Trapezoidal)
 @test E_9(x -> x^2) ≈ var(testDist7) atol = 1e-5
 
 # Test convenience functions. 
-@test expectation(x -> x, testDist7, z) == E_7(x -> x) # Grid one. 
+@test expectation(x -> x, testDist7, z) == E_9(x -> x) # Grid one. 
 @test expectation(x -> x, testDist4) == E_4(x -> x) # Standard normal/Gaussian continuous. 
 @test expectation(x -> x, testDist) == E_1(x -> x) # Discrete one. 
