@@ -7,13 +7,13 @@ benchmarks = BenchmarkGroup()
 #Put in specific benchmarks
 dist1 = DiscreteUniform(1, 10)
 E1 = expectation(dist1)
-benchmarks["discreteuniform"] = @benchmarkable E1($(x -> x))
+benchmarks["discreteuniform"] = @benchmarkable $E1($(x -> x))
 dist2 = Normal()
 E2 = expectation(dist2)
-benchmarks["standardnormal"] = @benchmarkable E2($(x -> x))
+benchmarks["standardnormal"] = @benchmarkable $E2($(x -> x))
 dist3 = Exponential(2)
 E3 = expectation(dist3)
-benchmarks["exponential"] = @benchmarkable E3($(x -> x))
+benchmarks["exponential"] = @benchmarkable $E3($(x -> x))
 #...
 
 results = run(benchmarks) # Get results. 
