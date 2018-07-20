@@ -1,7 +1,3 @@
-# Expectations.jl Documentation 
-```@contents
-```
-
 ## Overview 
 
 The goal of this package is to provide an intuitive and mathematically sound interface for taking expectations of random variables
