@@ -10,21 +10,21 @@ only univariate distributions are supported.
 
 To install, run (in v0.7): 
 
-```@repl default
+```@repl 1
 using Pkg 
 Pkg.add("Expectations")
 using Expectations
-Pkg.add("Suppressor") # hide 
-using Suppressor # hide
+Pkg.add("Suppressor")
+using Suppressor # Until FastGaussQuadrature fixes deprecation warnings
 ```
 
 Currently, Julia v0.6 and Julia v0.7 are supported. 
 
 ## The Expectation Operator 
 
-The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following (using `Suppressor.@suppress` to suppress deprecations in a dependency):
+The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following:
 
-```@repl default
+```@repl 1
 
 dist = Normal();
 @suppress E = expectation(dist)
@@ -32,44 +32,43 @@ dist = Normal();
 
 You can also choose and algorithms and default parameters (see below for list):
 
-```@repl default
-@suppress E = expectation(dist, Gaussian; n = 30)
+```@repl 1
+@suppress E = expectation(dist, Gaussian; n = 30) # Could have done expectation(dist) or expectation(dist; n = 30)
 ```
 
 These objects can then be applied to functions: 
 
-```@repl default
-@suppress E(x -> x)
-@suppress E(x -> x^2)
+```@repl 1
+E(x -> x)
+E(x -> x^2)
 ```
 
 There is also a convenience function to evaluate expectations directly, without returning the operator: 
 
-```@repl default
-f = x - > x^2
-@suppress expectation(f, dist)
+```@repl 1
+f = x -> x^2
+expectation(f, dist)
 ```
+
+In general, `expectation(f, dist, ...)` is equivalent to `E(f)`, where `E = expectation(dist, ...)`. 
 
 ### IterableExpectation
 
 The only concrete subtype of `Expectation` currently supported is `IterableExpectation{NT, WT}`. These are expectations for which we have a
 discrete vector of quadrature nodes and weights, either defined by user fiat, or set algorithmically. These support some additional behavior: 
 
-```@repl default
+```@repl 1
 nodeList = nodes(E)
 vals = map(x -> sin(x)^2, nodeList)
-@suppress E * vals
-@suppress (2E) * vals
+ E * vals
+ (2E) * vals
 ```
 
 The above behavior, in some sense, puts the "operator" in "expectation operator"; that is, it allows it to move elements of a vector space around, and to be scalar-multiplied. 
 
-
-### User-Defined Nodes and Convenience Functions 
+### User-Defined Nodes 
 
 There are some situations where we are forced to use a specific set of nodes. In those situations, `E = expectation(dist, nodes)` will create the relevant object. 
-
-In general, `expectation(f, dist, ...)` is equivalent to `E(f)`, where `E = expectation(dist, ...)`. 
 
 ## Supported Distributions, Algorithms, Keywords, and Defaults 
 
@@ -88,7 +87,7 @@ Here is a list of currently supported distributions, along with keyword argument
 
 ## Mathematical Details and References 
 
-The specific quadrature algorithms come from the [`FastGaussQuadrature.jl`](https://github.com/ajt60gaibb/FastGaussQuadrature.jl) library, which is maintained by [Alex Townsend](https://github.com/ajt60gaibb) of Cornell University. Much of the quadrature code came from the [`DistQuads.jl`](https://github.com/pkofod/DistQuads.jl) library, which is maintained by [Patrick K. Mogensen](https://github.com/pkofod) at the University of Copenhagen. 
+The specific quadrature algorithms come from the [`FastGaussQuadrature.jl`](https://github.com/ajt60gaibb/FastGaussQuadrature.jl) library, which is maintained by [Alex Townsend](https://github.com/ajt60gaibb) of Cornell University. Much of the quadrature code came from the [`DistQuads.jl`](https://github.com/pkofod/DistQuads.jl) library, which is maintained by [Patrick K. Mogensen](https://github.com/pkofod) at the University of Copenhagen. In addition, there are some objects contributed by individual users; see docstring for citations. 
 
 > **WARNING**: It is important to be aware of the deficiencies of numerical quadrature schemes. For example, it is recommended to be careful when using these methods for the following classes of functions and situations: 
 
