@@ -14,37 +14,40 @@ To install, run (in v0.7):
 using Pkg 
 Pkg.add("Expectations")
 using Expectations
+Pkg.add("Suppressor") # hide 
+using Suppressor # hide
 ```
 
 Currently, Julia v0.6 and Julia v0.7 are supported. 
 
 ## The Expectation Operator 
 
-The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following:
+The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following (using `Suppressor.@suppress` to suppress deprecations in a dependency):
 
 ```@repl default
 
 dist = Normal();
-E = expectation(dist)
+@suppress E = expectation(dist)
 ```
 
 You can also choose and algorithms and default parameters (see below for list):
 
 ```@repl default
-E = expectation(dist, Gaussian; n = 30)
+@suppress E = expectation(dist, Gaussian; n = 30)
 ```
 
 These objects can then be applied to functions: 
 
 ```@repl default
-E(x -> x)
-E(x -> x^2)
+@suppress E(x -> x)
+@suppress E(x -> x^2)
 ```
 
 There is also a convenience function to evaluate expectations directly, without returning the operator: 
 
 ```@repl default
-expectation(f, dist)
+f = x - > x^2
+@suppress expectation(f, dist)
 ```
 
 ### IterableExpectation
@@ -55,12 +58,18 @@ discrete vector of quadrature nodes and weights, either defined by user fiat, or
 ```@repl default
 nodeList = nodes(E)
 vals = map(x -> sin(x)^2, nodeList)
-E * vals
-(2E) * vals
+@suppress E * vals
+@suppress (2E) * vals
 ```
 
-The above behavior, in some sense, puts the "operator" in "expectation operator"; that is, it allows it to move elements of a vector space around, 
-and to be scalar-multiplied. 
+The above behavior, in some sense, puts the "operator" in "expectation operator"; that is, it allows it to move elements of a vector space around, and to be scalar-multiplied. 
+
+
+### User-Defined Nodes and Convenience Functions 
+
+There are some situations where we are forced to use a specific set of nodes. In those situations, `E = expectation(dist, nodes)` will create the relevant object. 
+
+In general, `expectation(f, dist, ...)` is equivalent to `E(f)`, where `E = expectation(dist, ...)`. 
 
 ## Supported Distributions, Algorithms, Keywords, and Defaults 
 
@@ -81,7 +90,7 @@ Here is a list of currently supported distributions, along with keyword argument
 
 The specific quadrature algorithms come from the [`FastGaussQuadrature.jl`](https://github.com/ajt60gaibb/FastGaussQuadrature.jl) library, which is maintained by [Alex Townsend](https://github.com/ajt60gaibb) of Cornell University. Much of the quadrature code came from the [`DistQuads.jl`](https://github.com/pkofod/DistQuads.jl) library, which is maintained by [Patrick K. Mogensen](https://github.com/pkofod) at the University of Copenhagen. 
 
-:warning: It is important to be aware of the deficiencies of numerical quadrature schemes. For example, it is recommended to be careful when using these methods for the following classes of functions and situations: 
+> **WARNING**: It is important to be aware of the deficiencies of numerical quadrature schemes. For example, it is recommended to be careful when using these methods for the following classes of functions and situations: 
 
 * Discontinuous or nondifferentiable functions (even if the function is a.e.-differentiable)
 * Periodic/oscillatory functions with a high frequency 
