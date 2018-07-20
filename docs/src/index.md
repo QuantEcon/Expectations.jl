@@ -15,15 +15,14 @@ only univariate distributions are supported.
 To install, run: 
 
 ```@repl 
-Pkg.add("Expectations")
+using Expectations
 ```
 
 Currently, Julia 0.6 and Julia 0.7 are supported. 
 
 ## The Expectation Operator 
 
-The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on
-a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following:
+The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following:
 
 ```@example
 dist = Normal();
@@ -91,5 +90,5 @@ If you would like to get in touch, please do one of the following:
 * Issue requests: Open an issue on the [package repository](https://github.com/econtoolkit/Expectations.jl) with the tag `feature request`. 
 * Bugs: Same as above, but with the tag `bug`. 
 * Pull Request: We are always open to new functionality. If you have a feature you'd like to add (say, a new distribution or algorithm), once you prepare a PR with the feature and some tests, open it in the usual way. 
-* Other: You can reach out to Jesse Perla at `jesse.perla@ubc.ca` and Arnav Sood at `arnav.sood@ubc.ca`. 
+* Other: You can reach out to Jesse Perla at [`jesse.perla@ubc.ca`](mailto:jesse.perla@ubc.ca) and Arnav Sood at [`arnav.sood@ubc.ca`](mailto:arnav.sood@ubc.ca)
 * Citation: If this package was helpful in your research work, you may consider citing the package in whatever method is appropriate for your field. 

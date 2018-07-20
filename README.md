@@ -2,8 +2,7 @@
 [![codecov](https://codecov.io/gh/econtoolkit/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/econtoolkit/Expectations.jl)
 [![Coverage Status](https://coveralls.io/repos/github/econtoolkit/Expectations.jl/badge.svg?branch=master)](https://coveralls.io/github/econtoolkit/Expectations.jl?branch=master)
 
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://econtoolkit.github.io/Expectations.jl/stable)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://ceontoolkit.github.io/Expectations.jl/latest)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://econtoolkit.github.io/Expectations.jl/latest)
 
 # Expectations
 
