@@ -8,10 +8,10 @@ only univariate distributions are supported.
 
 ## Installation 
 
-To install, run (in 0.7): 
+To install, run: 
 
-```@repl 
-using Expectations
+```@repl default 
+Pkg.add("Expectations")
 ```
 
 Currently, Julia 0.6 and Julia 0.7 are supported. 
@@ -20,20 +20,21 @@ Currently, Julia 0.6 and Julia 0.7 are supported.
 
 The key object in this package is an **expectation operator**, or an object `<: Expectation`. These include all objects capable of being called on a function; e.g. that support a method `function (e::Expectation)(f::Function)`. You can create these as following:
 
-```@repl
+```@repl default
+
 dist = Normal();
 E = expectation(dist)
 ```
 
 You can also choose and algorithms and default parameters (see below for list):
 
-```@repl
+```@repl default
 E = expectation(dist, Gaussian; n = 30)
 ```
 
 These objects can then be applied to functions: 
 
-```@repl
+```@repl default
 E(x -> x)
 E(x -> x^2)
 ```
@@ -43,7 +44,7 @@ E(x -> x^2)
 The only concrete subtype of `Expectation` currently supported is `IterableExpectation{NT, WT}`. These are expectations for which we have a
 discrete vector of quadrature nodes and weights, either defined by user fiat, or set algorithmically. These support some additional behavior: 
 
-```@repl
+```@repl default
 nodeList = nodes(E)
 vals = map(x -> sin(x)^2, nodeList)
 E * vals
