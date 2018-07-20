@@ -8,13 +8,15 @@ only univariate distributions are supported.
 
 ## Installation 
 
-To install, run: 
+To install, run (in v0.7): 
 
-```@repl default 
+```@repl default
+using Pkg 
 Pkg.add("Expectations")
+using Expectations
 ```
 
-Currently, Julia 0.6 and Julia 0.7 are supported. 
+Currently, Julia v0.6 and Julia v0.7 are supported. 
 
 ## The Expectation Operator 
 
@@ -39,6 +41,12 @@ E(x -> x)
 E(x -> x^2)
 ```
 
+There is also a convenience function to evaluate expectations directly, without returning the operator: 
+
+```@repl default
+expectation(f, dist)
+```
+
 ### IterableExpectation
 
 The only concrete subtype of `Expectation` currently supported is `IterableExpectation{NT, WT}`. These are expectations for which we have a
@@ -53,7 +61,6 @@ E * vals
 
 The above behavior, in some sense, puts the "operator" in "expectation operator"; that is, it allows it to move elements of a vector space around, 
 and to be scalar-multiplied. 
-
 
 ## Supported Distributions, Algorithms, Keywords, and Defaults 
 
