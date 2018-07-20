@@ -105,6 +105,29 @@ function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Gaussian
     return IterableExpectation(nodes, weights);
 end
 
+# QNWDist implementation. 
+"""
+    function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{QuantileLinSpace}; n::Int = 50, q0::Real = 0.001, qN::Real = 0.999 kwargs...)
+
+Implementation of the qnwdist() quadrature scheme written by Spencer Lyon (PhD. NYU), as part of the QuantEcon.jl library. Used with permission. For further details, see: https://github.com/QuantEcon/QuantEcon.jl/blob/be0a32ec17d1f5b04ed8f2e52604c70c69f416b2/src/quad.jl#L892.
+"""
+function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{QuantileLinSpace}; n::Int = 50, q0::Real = 0.001, qN::Real = 0.999, kwargs...)
+    # check nondegeneracy. 
+    all(isfinite.(params(dist))) || throw(ArgumentError("Distribution must be nondegenerate."))
+    # _quadnodes in the QuantEcon. 
+    a = quantile(dist, q0)
+    b = quantile(dist, qN)
+    nodes = collect(linspace(a, b, n))
+    # qnwdist in the QuantEcon. 
+    weights = zeros(n)
+    for i in 2:n-1
+        weights[i] = cdf(dist, (nodes[i] + nodes[i+1])/2) - cdf(dist, (nodes[i] + nodes[i-1])/2)
+    end
+    weights[1] = cdf(dist, (nodes[1] + nodes[2])/2)
+    weights[end] = 1 - cdf(dist, (nodes[end-1] + nodes[end])/2)
+    return IterableExpectation(nodes, weights)
+end 
+
 # Specific method for normal distributions. 
 # Number of points was calibrated by trial.
 """
@@ -256,3 +279,4 @@ expectation(f::Function, dist::ContinuousUnivariateDistribution, alg::Type{<:Qua
 Convenience function for continuous univariate distributions with user-supplied nodes. 
 """
 expectation(f::Function, dist::ContinuousUnivariateDistribution, nodes::AbstractArray, alg::Type{<:ExplicitQuadratureAlgorithm} = Trapezoidal; kwargs...) = expectation(dist, nodes, alg; kwargs...)(f)
+

@@ -78,7 +78,8 @@ Here is a list of currently supported distributions, along with keyword argument
 | ----------------- | -------------- | --------------------- | ------------ | 
 | Discrete Univariate | FiniteDiscrete <: QuadratureAlgorithm | N/A | Support must be finite. | 
 | Continuous Univariate | Gauss-Legendre (Gaussian <: QuadratureAlgorithm) | n = 500 | Support must be a compact interval ``[a, b]``. |
-| Normal <: Continuous Univariate | Gauss-Hermite (...) | n = 30 | Parameters must be finite. | 
+| Continuous Univariate | QNWDist[^1] (QuantileLinSpace <: ...) | n = 50, q0 = 0.001, qN = 0.999 | Distribution must be nondegenerate. |
+| Normal <: Continuous Univariate | Gauss-Hermite (...) | n = 30 | ... | 
 | LogNormal <: ... | Gauss-Hermite (...) | n = 30 | ... | 
 | Beta <: ... | Gauss-Jacobi (...) | n = 32 | ... | 
 | Exponential <: ... | Gauss-Laguerre (...) | n = 32 | ... | 
@@ -103,4 +104,6 @@ If you would like to get in touch, please do one of the following:
 * Bugs: Same as above, but with the tag `bug`. 
 * Pull Request: We are always open to new functionality. If you have a feature you'd like to add (say, a new distribution or algorithm), once you prepare a PR with the feature and some tests, open it in the usual way. 
 * Other: You can reach out to Jesse Perla at [`jesse.perla@ubc.ca`](mailto:jesse.perla@ubc.ca) and Arnav Sood at [`arnav.sood@ubc.ca`](mailto:arnav.sood@ubc.ca)
-* Citation: If this package was helpful in your research work, you may consider citing the package in whatever method is appropriate for your field. 
+* Citation: If this package was helpful in your research work, you may consider citing the package in whatever method is appropriate for your field.
+
+[^1]: This is a quadrature scheme written by Spencer Lyon (PhD. NYU) as part of the `QuantEcon`(https://quantecon.org/) project. Used with permission. 

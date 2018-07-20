@@ -127,3 +127,8 @@ E_10 = expectation(testDist7, z, Trapezoidal)
 @test expectation(x -> x, testDist7, z) == E_9(x -> x) # Grid one. 
 @test expectation(x -> x, testDist4) == E_4(x -> x) # Standard normal/Gaussian continuous. 
 @test expectation(x -> x, testDist) == E_1(x -> x) # Discrete one. 
+
+# Test qnw dist results. 
+@test expectation(x -> x, testDist4, QuantileLinSpace) ≈ 0.0 atol = 1e-12 
+@test expectation(x -> x, testDist6, QuantileLinSpace) ≈ mean6 atol = 1e-12
+# @test expectation(x -> ((x-mean_gamma)/sqrt(var_gamma))^3, gammaDist, QuantileLinSpace; n = 100, q0 = 1e-4, qN = 1-1e-4) ≈ skew_gamma atol = 1e-10
