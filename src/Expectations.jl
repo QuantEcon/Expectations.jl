@@ -6,6 +6,7 @@ module Expectations
 using Compat, FastGaussQuadrature
 using Compat.LinearAlgebra
 using SpecialFunctions
+using Reexport
 @reexport using Distributions
 
 # Load internal files. 
