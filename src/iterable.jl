@@ -3,23 +3,49 @@
 =#
 
 # Callable behavior for the object. Parameters because we cannot add methods to an abstract type. 
+"""
+    function (e::IterableExpectation{NT, WT})(f::Function; kwargs...) where {NT, WT}
+
+Implements callable behavior for `IterableExpectation` objects. 
+"""
 function (e::IterableExpectation{NT, WT})(f::Function; kwargs...) where {NT, WT}
     applicable(f, rand(nodes(e))) || throw(MethodError("The function doesn't accept elements from the distribution's support."))
     return dot(f.(nodes(e)), weights(e))
 end 
 
-# Getters for the object. 
-nodes(e::IterableExpectation) = e.nodes 
+# Getters for the object.
+"""
+    nodes(e::IterableExpectation)
+
+Returns the nodes of an `IterableExpectation`.
+"""
+nodes(e::IterableExpectation) = e.nodes
+
+"""
+    weights(e::IterableExpectation)
+
+Returns the weights of an `IterableExpectation`.
+"""
 weights(e::IterableExpectation) = e.weights 
 
 # Linear operator behavior.
 import Base.*
 
-# Right-multiplying an expectation by something. 
+# Right-multiplying an expectation by something.
+"""
+    *(e::IterableExpectation, h::AbstractArray) = dot(h, weights(e))
+
+Implements the right-application of an `IterableExpectation` by a vector of values on its nodes. 
+"""
 *(e::IterableExpectation, h::AbstractArray) = dot(h, weights(e))
  
 
 # Left-multiplying an expectation by a scalar.
+"""
+    *(r::Real, e::IterableExpectation) =  IterableExpectation(nodes(e), r * weights(e)) 
+
+Implements left-multiplication of an `IterableExpectation` by a real scalar. 
+"""
 *(r::Real, e::IterableExpectation) =  IterableExpectation(nodes(e), r * weights(e)) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
 
 
@@ -28,9 +54,18 @@ import Base.*
 =# 
 
 # Constructors for the object. 
+"""
+    expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete} = FiniteDiscrete; kwargs...) = _expectation(dist, alg; kwargs...)
+
+Dispatcher for (finite) discrete univariate expectations. 
+"""
 expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete} = FiniteDiscrete; kwargs...) = _expectation(dist, alg; kwargs...)
 
+"""
+    function _expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete}; kwargs...)
 
+Auxiliary constructor for an `IterableExpectation` object. 
+"""
 function _expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete}; kwargs...) 
     hasfinitesupport(dist) || throw(MethodError("Countably infinite distributions are not supported."))
     ourSupport = support(dist)
@@ -44,8 +79,18 @@ end
 =#
 
 # General catchall behavior --> Gauss-Legendre quadrature. 
+"""
+    expectation(dist::ContinuousUnivariateDistribution, alg::Type{<:QuadratureAlgorithm} = Gaussian; kwargs...) = _expectation(dist, alg; kwargs...) 
+
+Dispatcher for continuous univariate expectations. 
+"""
 expectation(dist::ContinuousUnivariateDistribution, alg::Type{<:QuadratureAlgorithm} = Gaussian; kwargs...) = _expectation(dist, alg; kwargs...) 
 
+"""
+    function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Gaussian}; n = 500, kwargs...)
+
+Implements Gauss-Legendre quadrature for continuous univariate distributions for which no specialized method exists. 
+"""
 function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Gaussian}; n = 500, kwargs...)
     a = minimum(dist)
     b = maximum(dist)
@@ -62,6 +107,11 @@ end
 
 # Specific method for normal distributions. 
 # Number of points was calibrated by trial.
+"""
+    function _expectation(dist::Normal, alg::Type{Gaussian}; n = 30, kwargs...) 
+
+Implements Gauss-Hermite quadrature for normal distributions. 
+"""
 function _expectation(dist::Normal, alg::Type{Gaussian}; n = 30, kwargs...) 
     σ = std(dist)
     μ = mean(dist)
@@ -72,7 +122,12 @@ function _expectation(dist::Normal, alg::Type{Gaussian}; n = 30, kwargs...)
     return IterableExpectation(nodes, weights)
 end 
 
-# Specific method for lognormal distributions. 
+# Specific method for lognormal distributions.
+"""
+    function _expectation(dist::LogNormal, alg::Type{Gaussian}; n = 30, kwargs...) 
+
+Implements Gauss-Hermite quadrature for lognormal distributions. 
+""" 
 function _expectation(dist::LogNormal, alg::Type{Gaussian}; n = 30, kwargs...) # Same settings for the normal method.
     m = mean(dist)
     v = var(dist)
@@ -88,7 +143,12 @@ function _expectation(dist::LogNormal, alg::Type{Gaussian}; n = 30, kwargs...) #
     return IterableExpectation(nodes, weights) # Transform the output. 
 end 
 
-# Specific method for beta distributions. 
+# Specific method for beta distributions.
+"""
+    function _expectation(dist::Beta, alg::Type{Gaussian}; n = 32, kwargs...)
+
+Implements Gauss-Jacobi quadrature for beta distributions. 
+"""
 function _expectation(dist::Beta, alg::Type{Gaussian}; n = 32, kwargs...)
     α, β = params(dist)
     (isfinite(α) && isfinite(β)) || throw(MethodError("The beta distribution supplied is malformed."))
@@ -99,7 +159,12 @@ function _expectation(dist::Beta, alg::Type{Gaussian}; n = 32, kwargs...)
     return IterableExpectation(nodes, weights)
 end 
 
-# Specific method for exponential distributions. 
+# Specific method for exponential distributions.
+"""
+    function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...) 
+
+Implements Gauss-Laguerre quadrature for Exponential distributions. 
+"""
 function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...) 
     θ = params(dist)[1]
     isfinite(θ) || throw(MethodError("The beta distribution supplied is malformed."))
@@ -109,7 +174,12 @@ function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...)
     return IterableExpectation(nodes, weights)
 end 
 
-# Specific method for gamma distributions. 
+# Specific method for gamma distributions.
+"""
+    function _expectation(dist::Gamma, alg::Type{Gaussian}; n = 32, kwargs...) 
+
+Implements Gauss-Laguerre quadrature for Gamma distributions. 
+"""
 function _expectation(dist::Gamma, alg::Type{Gaussian}; n = 32, kwargs...) 
     α, θ = params(dist)
     (isfinite(θ) && isfinite(θ)) || throw(MethodError("The beta distribution supplied is malformed."))
@@ -124,9 +194,19 @@ end
 =#
 
 # Dispatcher.
+"""
+    expectation(dist::ContinuousUnivariateDistribution, nodes, alg::Type{<:ExplicitQuadratureAlgorithm} = Trapezoidal; kwargs...)  = _expectation(dist, nodes, alg; kwargs...)
+
+Dispatcher for distributions with user-defined nodes. 
+"""
 expectation(dist::ContinuousUnivariateDistribution, nodes, alg::Type{<:ExplicitQuadratureAlgorithm} = Trapezoidal; kwargs...)  = _expectation(dist, nodes, alg; kwargs...)
 
 # Trapezoidal general behavior. 
+"""
+    function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs...)
+
+Implements trapezoidal integration for general distributions with user-defined nodes. 
+"""
 function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs...)
     M = length(nodes)
     Δ = diff(nodes)
@@ -137,7 +217,12 @@ function _expectation(dist, nodes::AbstractArray, alg::Type{Trapezoidal}; kwargs
     return IterableExpectation(nodes, allWeights)
 end 
 
-# Trapezoidal for regular. 
+# Trapezoidal for regular.
+"""
+    @compat function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
+
+Overloads trapezoidal integration for cases where the user-defined grids are regular. 
+"""
 @compat function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
     (first(nodes) >= minimum(dist) && last(nodes) <= maximum(dist)) || throw(ArgumentError("The nodes exceed the distribution's support."))
     M = length(nodes)
@@ -151,8 +236,23 @@ end
 #= 
     Convenience functions. 
 =#
+"""
+    expectation(f::Function, dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete} = FiniteDiscrete; kwargs...) = expectation(dist, alg; kwargs...)(f)
+
+Convenience function for (finite) discrete univariate distributions. 
+"""
 expectation(f::Function, dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete} = FiniteDiscrete; kwargs...) = expectation(dist, alg; kwargs...)(f)
 
+"""
+    expectation(f::Function, dist::ContinuousUnivariateDistribution, alg::Type{<:QuadratureAlgorithm} = Gaussian; kwargs...) = expectation(dist, alg; kwargs...)(f)
+
+Convenience function for continuous univariate distributions. 
+"""
 expectation(f::Function, dist::ContinuousUnivariateDistribution, alg::Type{<:QuadratureAlgorithm} = Gaussian; kwargs...) = expectation(dist, alg; kwargs...)(f)
 
+"""
+    expectation(f::Function, dist::ContinuousUnivariateDistribution, nodes::AbstractArray, alg::Type{<:ExplicitQuadratureAlgorithm} = Trapezoidal; kwargs...) = expectation(dist, nodes, alg; kwargs...)(f)
+
+Convenience function for continuous univariate distributions with user-supplied nodes. 
+"""
 expectation(f::Function, dist::ContinuousUnivariateDistribution, nodes::AbstractArray, alg::Type{<:ExplicitQuadratureAlgorithm} = Trapezoidal; kwargs...) = expectation(dist, nodes, alg; kwargs...)(f)

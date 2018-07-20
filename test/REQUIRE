@@ -2,3 +2,4 @@ Distributions
 Compat
 FastGaussQuadrature
 SpecialFunctions
+Reexport

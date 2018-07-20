@@ -2,6 +2,8 @@
 [![codecov](https://codecov.io/gh/econtoolkit/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/econtoolkit/Expectations.jl)
 [![Coverage Status](https://coveralls.io/repos/github/econtoolkit/Expectations.jl/badge.svg?branch=master)](https://coveralls.io/github/econtoolkit/Expectations.jl?branch=master)
 
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://econtoolkit.github.io/Expectations.jl/stable)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://ceontoolkit.github.io/Expectations.jl/latest)
 
 # Expectations
 
@@ -18,31 +20,20 @@ The underlying distributions are objects from `Distributions.jl` (currently `<:U
 
 ### Quadrature Algorithms
 
-We have `QuadratureAlgorithm` for algorithms which pick their own nodes, and 
-`ExplicitQuadratureAlgorithm` for ones where the user picks. Currently, the only concrete subtypes of 
-the former are `Gaussian` and `FiniteDiscrete`, and `Trapezoidal` for the latter.
+We support different types of Gaussian quadrature (Gauss-Hermite, Gauss-Legendre, Gauss-Laguerre, etc.) based on the distribution, as well as some methods
+with user-defined nodes (e.g., trapezoidal integration).
 
 ### Expectation Operator
 
-The package produces an expectation operators, `E`, as follows:
+The key object is the expectation operator, `E`, which can be used as follows:
 
 ```julia
 dist = Normal()
 E = expectation(dist)
 E(x -> x)
-
-E_morenodes = expectation(dist; n = 50) # Be careful, as too many nodes can introduce floating-point errors from miniscule exponents. 
 ```
 
-Expectations fall into a type hierarchy `IterableExpectation{NT, WT} <: IterableExpectation <: Expectation`
-Currently, only iterables are supported, and they are parametrized by `weights` and `nodes`.
-
-```julia
-h(x) = x^2 
-dot(weights(E), h.(nodes(E)))
-```
-
-Or as a linear operator, either when you give your own nodes (or apply a function `h.(nodes(E))`):
+Or as a linear operator on vectors: 
 
 ```julia
 dist = Normal()
@@ -52,18 +43,3 @@ E = expectation(dist, z; kwargs...)
 E*h # is equal to dot(h, weights(E))
 3E*h # is equal to 3(E*h) and (3E)*h
 ```
-
-### Mathematical Details
-
-For finite discrete distributions, we simply compute the precise expectation. For 
-continuous distributions given without nodes, we use some form of Gaussian quadrature
-(either Gauss-Legendre, or a distribution-specific form for common distributions). These
-distribution-specific algorithms are derived from `FastGaussQuadrature.jl`.
-
-The default for distributions with nodes (and currently the only supported algorithm) is 
-trapezoidal quadrature. 
-
-It is important to ensure that the particular quadrature scheme used is compatible with the 
-given function, distribution, and support. See the tests for accuracy under some normal and
-edge cases. 
-
