@@ -131,4 +131,7 @@ E_10 = expectation(testDist7, z, Trapezoidal)
 # Test qnw dist results. 
 @test expectation(x -> x, testDist4, QuantileLinSpace) ≈ 0.0 atol = 1e-12 
 @test expectation(x -> x, testDist6, QuantileLinSpace) ≈ mean6 atol = 1e-12
-# @test expectation(x -> ((x-mean_gamma)/sqrt(var_gamma))^3, gammaDist, QuantileLinSpace; n = 100, q0 = 1e-4, qN = 1-1e-4) ≈ skew_gamma atol = 1e-10
+@test 
+
+
+# @test expectation(x -> ((x-mean_gamma)/sqrt(var_gamma))^3, gammaDist, QuantileLinSpace) ≈ skew_gamma atol = 1e-10

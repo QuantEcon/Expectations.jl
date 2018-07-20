@@ -14,8 +14,6 @@ To install, run (in v0.7):
 using Pkg 
 Pkg.add("Expectations")
 using Expectations
-Pkg.add("Suppressor")
-using Suppressor # Until FastGaussQuadrature fixes deprecation warnings
 ```
 
 Currently, Julia v0.6 and Julia v0.7 are supported. 
@@ -27,13 +25,13 @@ The key object in this package is an **expectation operator**, or an object `<: 
 ```@repl 1
 
 dist = Normal();
-@suppress E = expectation(dist)
+E = expectation(dist)
 ```
 
 You can also choose and algorithms and default parameters (see below for list):
 
 ```@repl 1
-@suppress E = expectation(dist, Gaussian; n = 30) # Could have done expectation(dist) or expectation(dist; n = 30)
+E = expectation(dist, Gaussian; n = 30) # Could have done expectation(dist) or expectation(dist; n = 30)
 ```
 
 These objects can then be applied to functions: 
@@ -60,8 +58,8 @@ discrete vector of quadrature nodes and weights, either defined by user fiat, or
 ```@repl 1
 nodeList = nodes(E)
 vals = map(x -> sin(x)^2, nodeList)
- E * vals
- (2E) * vals
+E * vals
+(2E) * vals
 ```
 
 The above behavior, in some sense, puts the "operator" in "expectation operator"; that is, it allows it to move elements of a vector space around, and to be scalar-multiplied. 

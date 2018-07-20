@@ -111,13 +111,13 @@ end
 
 Implementation of the qnwdist() quadrature scheme written by Spencer Lyon (PhD. NYU), as part of the QuantEcon.jl library. Used with permission. For further details, see: https://github.com/QuantEcon/QuantEcon.jl/blob/be0a32ec17d1f5b04ed8f2e52604c70c69f416b2/src/quad.jl#L892.
 """
-function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{QuantileLinSpace}; n::Int = 50, q0::Real = 0.001, qN::Real = 0.999, kwargs...)
+function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{QuantileLinSpace}; n::Int = 50, kwargs...)
     # check nondegeneracy. 
     all(isfinite.(params(dist))) || throw(ArgumentError("Distribution must be nondegenerate."))
     # _quadnodes in the QuantEcon. 
-    a = quantile(dist, q0)
-    b = quantile(dist, qN)
-    nodes = collect(linspace(a, b, n))
+    quantiles = linspace(0.0, 1.0, n+2)
+    quantiles = quantiles[2:n+1] # Extract only the interior ones. 
+    nodes = quantile.(Ref(dist), quantiles)
     # qnwdist in the QuantEcon. 
     weights = zeros(n)
     for i in 2:n-1
