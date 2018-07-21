@@ -104,4 +104,4 @@ If you would like to get in touch, please do one of the following:
 * Other: You can reach out to Jesse Perla at [`jesse.perla@ubc.ca`](mailto:jesse.perla@ubc.ca) and Arnav Sood at [`arnav.sood@ubc.ca`](mailto:arnav.sood@ubc.ca)
 * Citation: If this package was helpful in your research work, you may consider citing the package in whatever method is appropriate for your field.
 
-[^1]: This is a quadrature scheme written by Spencer Lyon (PhD. NYU) as part of the `QuantEcon`(https://quantecon.org/) project. Used with permission. 
+[^1]: This is a quadrature scheme written by [Spencer Lyon](http://spencerlyon.com/) (PhD. NYU) as part of the [`QuantEcon`](https://quantecon.org/) project. Used with permission. 
