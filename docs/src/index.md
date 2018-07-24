@@ -56,8 +56,8 @@ The only concrete subtype of `Expectation` currently supported is `IterableExpec
 discrete vector of quadrature nodes and weights, either defined by user fiat, or set algorithmically. These support some additional behavior: 
 
 ```@repl 1
-nodeList = nodes(E)
-vals = map(x -> sin(x)^2, nodeList)
+nodeList = nodes(E);
+vals = map(x -> x^2, nodeList);
 E * vals
 (2E) * vals
 ```
