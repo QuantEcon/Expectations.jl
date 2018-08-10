@@ -14,12 +14,6 @@ notifications:
 git:
   depth: 99999999
 
-## uncomment the following lines to allow failures on nightly julia
-## (tests will run but not make your overall status red)
-# matrix:
-#  allow_failures:
-#  - julia: nightly
-
 ## uncomment and modify the following lines to manually install system packages
 #addons:
 #  apt: # apt-get for linux
@@ -33,9 +27,10 @@ git:
 #  - julia -e 'Pkg.clone(pwd()); Pkg.build("Expectations"); Pkg.test("Expectations"; coverage=true)'
 after_success:
   # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("Expectations")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'cd($TRAVIS_BUILD_DIR); using Pkg; pkg"add Coverage"; using Coverage; Coveralls.submit(Coveralls.process_folder())'
   # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("Expectations")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'cd($TRAVIS_BUILD_DIR); using Pkg; pkg"add Coverage"; using Coverage; Codecov.submit(Codecov.process_folder())'
   # build documentation
-  - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'cd(Pkg.dir("Expectations")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'using Pkg; pkg"add Documenter"'
+  - julia -e 'import Expectations; cd($TRAVIS_BUILD_DIR); include(joinpath("docs", "make.jl"))'
+
