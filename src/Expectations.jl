@@ -6,6 +6,7 @@ module Expectations
 using Compat, FastGaussQuadrature
 using Compat.LinearAlgebra
 using SpecialFunctions
+using Distributions
 
 # Load internal files. 
 include("types.jl"),
