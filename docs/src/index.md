@@ -14,9 +14,10 @@ To install, run (in v0.7):
 using Pkg 
 Pkg.add("Expectations")
 using Expectations
+using Distributions
 ```
 
-Currently, Julia v0.6 and Julia v0.7 are supported. 
+Currently, Julia v0.6 and up are supported. 
 
 ## The Expectation Operator 
 
