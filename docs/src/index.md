@@ -14,6 +14,7 @@ To install, run (in v0.7):
 using Pkg 
 Pkg.add("Expectations")
 using Expectations
+Pkg.add("Distributions")
 using Distributions
 ```
 
