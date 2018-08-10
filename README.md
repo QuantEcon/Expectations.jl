@@ -31,14 +31,24 @@ dist = Normal()
 E = expectation(dist)
 E(x -> x)
 ```
+For convenience,
+```julia
+expectation(x->x^2, dist)
+```
 
-Or as a linear operator on vectors: 
-
+As a linear operator on vectors using the nodes of the distribution 
 ```julia
 dist = Normal()
-z = -10:0.2:10
-h = (x -> x^2).(z)
-E = expectation(dist, z; kwargs...)
-E*h # is equal to dot(h, weights(E))
-3E*h # is equal to 3(E*h) and (3E)*h
+E = expectation(dist)
+x = nodes(E)
+f(x) = x^2
+E * f.(x) == dot(f.(x), weights(E))
+```
+
+If nodes are given, it will calculate using Newton-Coates quadrature (e.g. Trapezoidal)
+```julia
+x = -10:0.2:10
+f(x) = x^2
+E = expectation(dist, x)
+3 * E(f) == 3 * E * f.(x)
 ```
