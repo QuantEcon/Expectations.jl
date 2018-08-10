@@ -1,7 +1,7 @@
 site_name:        Expectations.jl
 repo_url:         https://github.com/econtoolkit/Expectations.jl
 site_description: A package to help with numerical expectations of random variables and their functions. 
-site_author:      econtoolkit, jlperla, ArnavSood
+site_author:      econtoolkit, jlperla, arnavs
 
 theme: readthedocs
 

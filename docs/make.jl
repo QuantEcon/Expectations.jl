@@ -7,6 +7,6 @@ makedocs()
 deploydocs(
     deps   = Deps.pip("mkdocs", "python-markdown-math"),
     repo = "github.com/econtoolkit/Expectations.jl.git",
-    julia = "nightly",
+    julia = "1.0",
     osname = "linux"
 )
