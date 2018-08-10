@@ -115,7 +115,7 @@ function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Quantile
     # check nondegeneracy. 
     all(isfinite.(params(dist))) || throw(ArgumentError("Distribution must be nondegenerate."))
     # _quadnodes in the QuantEcon. 
-    quantiles = @compat range(q0, stop=qN, length=n)
+    quantiles = Compat.range(q0, stop=qN, length=n)
     nodes = quantile.(Ref(dist), quantiles)
     # qnwdist in the QuantEcon. 
     weights = zeros(n)

@@ -116,7 +116,7 @@ E_8 = expectation(testDist7, z, Trapezoidal)
 @test E_7(x -> x^2) ≈ var(testDist7) atol = 1e-6
 
 # Test irregular trapezoidal.
-@compat z = unique([range(-5, stop=1, length=203)' range(1, stop=5, length=200)'])
+z = unique([Compat.range(-5, stop=1, length=203)' Compat.range(1, stop=5, length=200)'])
 E_9 = expectation(testDist7, z)
 E_10 = expectation(testDist7, z, Trapezoidal)
 @test nodes(E_9) == nodes(E_10) && weights(E_9) == weights(E_10)
