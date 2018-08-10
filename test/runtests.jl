@@ -1,5 +1,5 @@
 using Expectations, Distributions, Compat, FastGaussQuadrature
-using Compat.LinearAlgebra
+using Compat.LinearAlgebra, Compat.range 
 
 @static if VERSION < v"0.7.0-DEV.2005"
     using Base.Test

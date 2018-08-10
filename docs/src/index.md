@@ -77,7 +77,7 @@ Here is a list of currently supported distributions, along with keyword argument
 | ----------------- | -------------- | --------------------- | ------------ | 
 | Discrete Univariate | FiniteDiscrete <: QuadratureAlgorithm | N/A | Support must be finite. | 
 | Continuous Univariate | Gauss-Legendre (Gaussian <: QuadratureAlgorithm) | n = 500 | Support must be a compact interval ``[a, b]``. |
-| Continuous Univariate | QNWDist[^1] (QuantileLinSpace <: ...) | n = 50, q0 = 0.001, qN = 0.999 | Distribution must be nondegenerate. |
+| Continuous Univariate | QNWDist[^1] (QuantileRange <: ...) | n = 50, q0 = 0.001, qN = 0.999 | Distribution must be nondegenerate. |
 | Normal <: Continuous Univariate | Gauss-Hermite (...) | n = 30 | ... | 
 | LogNormal <: ... | Gauss-Hermite (...) | n = 30 | ... | 
 | Beta <: ... | Gauss-Jacobi (...) | n = 32 | ... | 
