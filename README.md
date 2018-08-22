@@ -11,7 +11,7 @@ Installation (v0.7 and up):
 pkg> add Expectations
 ```
 
-This is a package designed to simplify the process of taking expectations of functions of random variables. The package is compatible with Julia v0.6 and Julia v0.7. 
+This is a package designed to simplify the process of taking expectations of functions of random variables. The package is backward-compatible with v0.6.  
 
 ### Random Variables 
 
