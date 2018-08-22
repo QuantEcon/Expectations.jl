@@ -6,9 +6,9 @@
 
 # Expectations
 
-Installation:
+Installation (v0.7 and up):
 ```julia
-Pkg.add("Expectations")
+pkg> add Expectations
 ```
 
 This is a package designed to simplify the process of taking expectations of functions of random variables. The package is compatible with Julia v0.6 and Julia v0.7. 
