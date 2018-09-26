@@ -133,3 +133,11 @@ E_10 = expectation(testDist7, z, Trapezoidal)
 @test expectation(x -> x, testDist6, QuantileRange) ≈ mean6 atol = 1e-12
 
 # @test expectation(x -> ((x-mean_gamma)/sqrt(var_gamma))^3, gammaDist, QuantileRange) ≈ skew_gamma atol = 1e-10
+
+#=
+    BUGFIXES
+=#
+
+d = Normal(1., 1.)
+E = expectation(d)
+@test E(x -> x) ≈ 1.0 

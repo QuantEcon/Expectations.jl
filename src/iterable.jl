@@ -139,7 +139,7 @@ function _expectation(dist::Normal, alg::Type{Gaussian}; n = 30, kwargs...)
     μ = mean(dist)
     (isfinite(σ) && isfinite(μ)) || throw(MethodError("Parameters σ, μ must be finite."))
     gh = gausshermite(n)
-    nodes = gh[1].*(sqrt(2)*(σ + μ))
+    nodes = gh[1].*(sqrt(2)*(σ)) .+ μ
     weights = gh[2]./sqrt(pi)
     return IterableExpectation(nodes, weights)
 end 
