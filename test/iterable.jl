@@ -156,7 +156,11 @@ for dist in distributions
 	E = expectation(dist)
 	@test E(x -> x) ≈ μ # First moment. 
 	@test E(x -> x^2) - μ^2 ≈ σ^2 # Second moment. 
-	@test E(x -> ((x - μ)/σ)^3) + 1.0 ≈ skewness(dist) + 1.0 # Third moment. +1 to avoid 0 tolerances. 
+  @test E(x -> ((x - μ)/σ)^3) + 1.0 ≈ skewness(dist) + 1.0 # Third moment. +1 to avoid 0 tolerances. 
+  # Convenience call. 
+  @test expectation(x -> x, dist) ≈ μ
+  @test expectation(x -> x^2, dist) - μ^2 ≈ σ^2 
+  @test expectation(x -> ((x - μ)/σ)^3, dist) + 1.0 ≈ skewness(dist) + 1.0
 end 
 
 #=
