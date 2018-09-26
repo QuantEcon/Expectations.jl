@@ -158,7 +158,7 @@ function _expectation(dist::LogNormal, alg::Type{Gaussian}; n = 30, kwargs...) #
     gh = gausshermite(n)
     μ = log(m^2/sqrt(v + m^2))
     σ = sqrt(log(v/m^2 + 1))
-    nodes = gh[1].*(sqrt(2)*(σ + μ))
+    nodes = gh[1].*sqrt(2).*(σ) .+ μ
     weights = gh[2]./sqrt(pi)
     # get new nodes 
     map!(x -> exp(x), nodes, nodes)
@@ -188,7 +188,7 @@ end
 Implements Gauss-Laguerre quadrature for Exponential distributions. 
 """
 function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...) 
-    θ = params(dist)[1]
+    θ = inv(dist.θ) # To correct for the Distributions parametrization. 
     isfinite(θ) || throw(MethodError("The beta distribution supplied is malformed."))
     gl = gausslaguerre(n)
     nodes = gl[1]./θ

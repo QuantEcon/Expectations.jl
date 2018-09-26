@@ -135,6 +135,31 @@ E_10 = expectation(testDist7, z, Trapezoidal)
 # @test expectation(x -> ((x-mean_gamma)/sqrt(var_gamma))^3, gammaDist, QuantileRange) ≈ skew_gamma atol = 1e-10
 
 #=
+    Non-standard parameter tests. 
+=#
+		
+# Define distributions. 
+distributions = [
+	Normal(1.23, 4.56), # Normal
+	Exponential(2.12), # Exponential 
+	Gamma(4.3), # Gamma 
+	Beta(2.123), # Beta 
+	LogNormal(4.5), # LogNormal 
+]
+
+# Run the tests. 
+for dist in distributions
+	println(dist)
+	μ = mean(dist)
+	σ = std(dist) 
+	# No convenience call. 
+	E = expectation(dist)
+	@test E(x -> x) ≈ μ # First moment. 
+	@test E(x -> x^2) - μ^2 ≈ σ^2 # Second moment. 
+	@test E(x -> ((x - μ)/σ)^3) + 1.0 ≈ skewness(dist) + 1.0 # Third moment. +1 to avoid 0 tolerances. 
+end 
+
+#=
     BUGFIXES
 =#
 
