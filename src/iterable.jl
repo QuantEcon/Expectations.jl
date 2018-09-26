@@ -9,7 +9,7 @@
 Implements callable behavior for `IterableExpectation` objects. 
 """
 function (e::IterableExpectation{NT, WT})(f::Function; kwargs...) where {NT, WT}
-    applicable(f, rand(nodes(e))) || throw(MethodError("The function doesn't accept elements from the distribution's support."))
+    applicable(f, rand(nodes(e))) || throw(ArgumentError("The function doesn't accept elements from the distribution's support."))
     return dot(f.(nodes(e)), weights(e))
 end 
 
@@ -67,7 +67,7 @@ expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete} = Fi
 Auxiliary constructor for an `IterableExpectation` object. 
 """
 function _expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete}; kwargs...) 
-    hasfinitesupport(dist) || throw(MethodError("Countably infinite distributions are not supported."))
+    hasfinitesupport(dist) || throw(ArgumentError("Countably infinite distributions are not supported."))
     ourSupport = support(dist)
     ourWeights = pdf.(Ref(dist), support(dist))
     sum(ourWeights) ≈ 1.0 || warn("The distribution supplied is not approximately equal to 1 in mass.")
@@ -94,7 +94,7 @@ Implements Gauss-Legendre quadrature for continuous univariate distributions for
 function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Gaussian}; n = 500, kwargs...)
     a = minimum(dist)
     b = maximum(dist)
-    (a > -Inf && b < Inf) || throw(MethodError("The distribution must be defined on a compact interval."))
+    (a > -Inf && b < Inf) || throw(ArgumentError("The distribution must be defined on a compact interval."))
     rawNodes, rawWeights = gausslegendre(n)
     # Transform nodes to proper interval. 
     nodes = map(x -> (0.5(b-a))*x + (a+b)/2, rawNodes)
@@ -137,7 +137,7 @@ Implements Gauss-Hermite quadrature for normal distributions.
 function _expectation(dist::Normal, alg::Type{Gaussian}; n = 30, kwargs...) 
     σ = std(dist)
     μ = mean(dist)
-    (isfinite(σ) && isfinite(μ)) || throw(MethodError("Parameters σ, μ must be finite."))
+    (isfinite(σ) && isfinite(μ)) || throw(ArgumentError("Parameters σ, μ must be finite."))
     gh = gausshermite(n)
     nodes = gh[1].*(sqrt(2)*(σ)) .+ μ
     weights = gh[2]./sqrt(pi)
@@ -153,7 +153,7 @@ Implements Gauss-Hermite quadrature for lognormal distributions.
 function _expectation(dist::LogNormal, alg::Type{Gaussian}; n = 30, kwargs...) # Same settings for the normal method.
     m = mean(dist)
     v = var(dist)
-    (isfinite(m) && isfinite(v)) || throw(MethodError("Infinite μ or σ^2 are not supported."))
+    (isfinite(m) && isfinite(v)) || throw(ArgumentError("Infinite μ or σ^2 are not supported."))
     # get normal nodes
     gh = gausshermite(n)
     μ = log(m^2/sqrt(v + m^2))
@@ -173,7 +173,7 @@ Implements Gauss-Jacobi quadrature for beta distributions.
 """
 function _expectation(dist::Beta, alg::Type{Gaussian}; n = 32, kwargs...)
     α, β = params(dist)
-    (isfinite(α) && isfinite(β)) || throw(MethodError("The beta distribution supplied is malformed."))
+    (isfinite(α) && isfinite(β)) || throw(ArgumentError("The beta distribution supplied is malformed."))
     gj = FastGaussQuadrature.JacobiRec(n, α-1, β-1)
     G = gamma(α)*gamma(β)/gamma(α+β)
     nodes = (1 .- gj[1])/2
@@ -189,7 +189,7 @@ Implements Gauss-Laguerre quadrature for Exponential distributions.
 """
 function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...) 
     θ = inv(dist.θ) # To correct for the Distributions parametrization. 
-    isfinite(θ) || throw(MethodError("The beta distribution supplied is malformed."))
+    isfinite(θ) || throw(ArgumentError("The beta distribution supplied is malformed."))
     gl = gausslaguerre(n)
     nodes = gl[1]./θ
     weights = gl[2]
@@ -204,7 +204,7 @@ Implements Gauss-Laguerre quadrature for Gamma distributions.
 """
 function _expectation(dist::Gamma, alg::Type{Gaussian}; n = 32, kwargs...) 
     α, θ = params(dist)
-    (isfinite(θ) && isfinite(θ)) || throw(MethodError("The beta distribution supplied is malformed."))
+    (isfinite(θ) && isfinite(θ)) || throw(ArgumentError("The beta distribution supplied is malformed."))
     gl = gausslaguerre(n, α-1)    
     nodes = gl[1]./θ
     weights = gl[2]./gamma(α)

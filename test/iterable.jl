@@ -17,7 +17,7 @@ z = nodes(E_1)
 
 # Test for error handling. 
 testDist2 = Poisson(3)
-@test_throws MethodError expectation(testDist2) # Catches unbounded distributions. 
+@test_throws ArgumentError expectation(testDist2) # Catches unbounded distributions. 
 @test_throws Exception E_1(x -> dot(x, ones(7))) # Test for non-applicable functions. MethodError on 0.6, DimensionMismatch on 0.7. 
 @test_throws MethodError h.(z) * E_1 # Test non-commutativity of operator. 
 
@@ -73,13 +73,13 @@ skew6 = skewness(testDist6)
 
 # Test error handling 
 errorDist1 = Beta(Inf) # Beta Gaussian
-@test_throws MethodError expectation(errorDist1)
+@test_throws ArgumentError expectation(errorDist1)
 errorDist2 = LogNormal(Inf, Inf) # LogNormal Gaussian
-@test_throws MethodError expectation(errorDist2)
+@test_throws ArgumentError expectation(errorDist2)
 errorDist3 = Normal(0, Inf) # Normal Gaussian
-@test_throws MethodError expectation(errorDist3)
+@test_throws ArgumentError expectation(errorDist3)
 errorDist4 = Uniform(-Inf, Inf) # Degenerate uniform, Gauss-Legendre. 
-@test_throws MethodError expectation(errorDist4)
+@test_throws ArgumentError expectation(errorDist4)
 
 # Test some more distributions
 gammaDist = Gamma()
@@ -144,12 +144,12 @@ distributions = [
 	Exponential(2.12), # Exponential 
 	Gamma(4.3), # Gamma 
 	Beta(2.123), # Beta 
-	LogNormal(4.5), # LogNormal 
+  LogNormal(4.5), # LogNormal 
+  Cosine(1.2), # Cosine
 ]
 
 # Run the tests. 
 for dist in distributions
-	println(dist)
 	μ = mean(dist)
 	σ = std(dist) 
 	# No convenience call. 

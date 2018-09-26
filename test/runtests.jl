@@ -8,5 +8,3 @@ else
 end
 
 @testset "Iterable distributions" begin include("iterable.jl") end 
-
-
