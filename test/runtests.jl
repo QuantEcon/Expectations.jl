@@ -1,10 +1,9 @@
-using Expectations, Distributions, Compat, FastGaussQuadrature
-using Compat.LinearAlgebra
+using Expectations, Distributions
 
 @static if VERSION < v"0.7.0-DEV.2005"
-    using Base.Test
+    using Base.Test, Compat.Random
 else
-    using Test
+    using Test, Random, Statistics, LinearAlgebra
 end
 
-@testset "Iterable distributions" begin include("iterable.jl") end 
+@testset "Iterable distributions" begin include("iterable.jl") end
