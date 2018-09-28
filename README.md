@@ -1,8 +1,8 @@
-[![Travis status](https://travis-ci.org/econtoolkit/Expectations.jl.svg?branch=master)](https://travis-ci.org/econtoolkit/Expectations.jl)
-[![codecov](https://codecov.io/gh/econtoolkit/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/econtoolkit/Expectations.jl)
-[![Coverage Status](https://coveralls.io/repos/github/econtoolkit/Expectations.jl/badge.svg?branch=master)](https://coveralls.io/github/econtoolkit/Expectations.jl?branch=master)
+[![Travis status](https://travis-ci.org/QuantEcon/Expectations.jl.svg?branch=master)](https://travis-ci.org/QuantEcon/Expectations.jl)
+[![codecov](https://codecov.io/gh/QuantEcon/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantEcon/Expectations.jl)
+[![Coverage Status](https://coveralls.io/repos/github/QuantEcon/Expectations.jl/badge.svg?branch=master)](https://coveralls.io/github/QuantEcon/Expectations.jl?branch=master)
 
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://econtoolkit.github.io/Expectations.jl/latest)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/latest)
 
 # Expectations
 
