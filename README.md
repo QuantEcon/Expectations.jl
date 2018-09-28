@@ -1,6 +1,5 @@
 [![Travis status](https://travis-ci.org/QuantEcon/Expectations.jl.svg?branch=master)](https://travis-ci.org/QuantEcon/Expectations.jl)
 [![codecov](https://codecov.io/gh/QuantEcon/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantEcon/Expectations.jl)
-[![Coverage Status](https://coveralls.io/repos/github/QuantEcon/Expectations.jl/badge.svg?branch=master)](https://coveralls.io/github/QuantEcon/Expectations.jl?branch=master)
 
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/latest)
 
@@ -24,31 +23,23 @@ with user-defined nodes (e.g., trapezoidal integration).
 
 ### Expectation Operator
 
-The key object is the expectation operator, `E`, which can be used as follows:
+The key object is the `expectation` function, which returns an operator:
 
 ```julia
 dist = Normal()
 E = expectation(dist)
 E(x -> x)
 ```
-For convenience,
+For convenience, the operator can be applied directly to a function instead of being cached,
 ```julia
 expectation(x->x^2, dist)
 ```
 
-As a linear operator on vectors using the nodes of the distribution 
+As a linear operator on vectors using the nodes of the distribution
 ```julia
 dist = Normal()
 E = expectation(dist)
 x = nodes(E)
 f(x) = x^2
 E * f.(x) == dot(f.(x), weights(E))
-```
-
-If nodes are given, it will calculate using Newton-Coates quadrature (e.g. Trapezoidal)
-```julia
-x = -10:0.2:10
-f(x) = x^2
-E = expectation(dist, x)
-3 * E(f) == 3 * E * f.(x)
 ```
