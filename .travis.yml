@@ -3,12 +3,13 @@ language: julia
 os:
   - linux
 julia:
-  - 0.6 
-  - 1.0 
+  - 0.6
+  - 1.0
   - nightly
 matrix:
   allow_failures:
     julia: nightly
+    julia: 0.6 
 notifications:
   email: false
 git:
@@ -32,4 +33,3 @@ after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("Expectations")); pkg"add Coverage"; using Coverage; Codecov.submit(Codecov.process_folder())'
   # build documentation
   - julia -e 'using Pkg; pkg"add Documenter"; cd(Pkg.dir("Expectations")); include(joinpath("docs", "make.jl"))'
-
