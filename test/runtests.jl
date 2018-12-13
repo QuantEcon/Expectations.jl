@@ -1,4 +1,4 @@
-using Expectations, Distributions, Compat 
+using Expectations, Distributions 
 
 @static if VERSION < v"0.7.0-DEV.2005"
     using Base.Test, Compat.Random

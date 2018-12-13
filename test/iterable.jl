@@ -74,7 +74,7 @@ for dist in distset
     μ = mean(dist)
     σ = std(dist)
     # Regular grid.
-    grid = Compat.range(minimum(x), stop = maximum(x), length = 100)
+    grid = range(minimum(x), stop = maximum(x), length = 100)
     E = expectation(dist, grid)
     @test E(x -> x) ≈ μ
     @test abs(E(x -> x^2) - μ^2 - σ^2) < 1e-4
