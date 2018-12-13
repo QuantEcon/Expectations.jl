@@ -23,6 +23,12 @@ for dist in distset
     @test expectation(x -> x^2, dist) - μ^2 ≈ σ^2
     @test expectation(x -> ((x - μ)/σ)^3, dist) + 1. ≈ skewness(dist) + 1.
     println(dist)
+    # Stress tests.
+    # Many nodes.
+    E2 = expectation(dist, n = 100)
+    @test E2(x -> x) ≈ μ
+    @test E2(x -> x^2) - μ^2 ≈ σ^2
+    @test E2(x -> ((x - μ)/σ)^3) + 1. ≈ skewness(dist) + 1. # To avoid comparisons to 0.0 exactly.
 end
 
 # Linear operator behavior.
@@ -58,3 +64,23 @@ end
 E = expectation(DiscreteUniform(1, 10))
 @test_throws Exception E(x -> dot(x, ones(7))) # Non-applicable functions.
 @test_throws MethodError (x -> 2*x).(nodes(E)) * E # Non-commutativity.
+
+# Trapezoidal methods.
+distset = [Beta()]
+
+for dist in distset
+    # Setup.
+    x = support(dist)
+    μ = mean(dist)
+    σ = std(dist)
+    # Regular grid.
+    grid = range(minimum(x), stop = maximum(x), length = 100)
+    E = expectation(dist, grid)
+    @test E(x -> x) ≈ μ
+    @test abs(E(x -> x^2) - μ^2 - σ^2) < 1e-4
+    # Irregular grid.
+    grid2 = unique([grid' range(minimum(x), stop = maximum(x), length = 77)'])
+    E2 = expectation(dist, grid2)
+    @test E2(x -> x) isa Number && true # no accuracy guarantees for the irregular grid 
+    @test abs(E2(x -> x^2) - μ^2 - σ^2) isa Number && true
+end
