@@ -8,17 +8,11 @@ only univariate distributions are supported.
 
 ## Installation 
 
-To install, run (in v0.7): 
+To install, run: 
 
 ```@repl 1
-using Pkg 
-Pkg.add("Expectations")
-using Expectations
-Pkg.add("Distributions")
-using Distributions
+] add Expectations Distributions
 ```
-
-Currently, Julia v0.6 and up are supported. 
 
 ## The Expectation Operator 
 
