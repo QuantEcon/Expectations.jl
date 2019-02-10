@@ -10,9 +10,9 @@ Installation (v1.0 and up):
 pkg> add Expectations
 ```
 
-This is a package designed to simplify the process of taking expectations of functions of random variables. 
+This is a package designed to simplify the process of taking expectations of functions of random variables! 
 
-### Random Variables 
+### Random Variables
 
 The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`).
 
