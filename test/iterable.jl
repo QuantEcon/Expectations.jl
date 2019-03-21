@@ -117,7 +117,7 @@ distset = [
 ]
 
 for dist in distset 
-    E = expectation(dist, alg=QuantileRange)
+    E = expectation(dist, QuantileRange)
     h(x) = 2*x
     z = nodes(E)
     @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
