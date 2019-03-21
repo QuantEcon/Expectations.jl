@@ -52,7 +52,7 @@ distset = [ # Noncompact dists
     LogNormal(Inf, Inf),
     Beta(Inf),
     Normal(0, Inf),
-    Uniform(-Inf, Inf), #this is the guy
+    Uniform(-Inf, Inf),
     Poisson(3)
 ]
 
@@ -104,8 +104,10 @@ for dist in distset
     # Irregular grid.
     grid2 = unique([grid' range(minimum(x), stop = maximum(x), length = 77)'])
     E2 = expectation(dist, grid2)
-    @test E2(x -> x) isa Number && true # no accuracy guarantees for the irregular grid
-    @test abs(E2(x -> x^2) - μ^2 - σ^2) isa Number && true
+    @test E2(x -> x) isa Number # no accuracy guarantees for the irregular grid
+    @test abs(E2(x -> x^2) - μ^2 - σ^2) isa Number
+    # Convenience method 
+    @test expectation(identity, dist, grid2) ≈ E2(x -> x)
 end
 
 # Quantile 
@@ -122,4 +124,3 @@ for dist in distset
     @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
     @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
 end 
-
