@@ -30,7 +30,7 @@ for dist in distset
     @test E2(x -> x^2) - μ^2 ≈ σ^2
     @test E2(x -> ((x - μ)/σ)^3) + 1. ≈ skewness(dist) + 1. # To avoid comparisons to 0.0 exactly.
 end
-
+#
 # Linear operator behavior.
 distset = [
     DiscreteUniform(1., 10.),
@@ -49,16 +49,46 @@ end
 
 # Error handling.
 distset = [ # Noncompact dists
-    Beta(Inf),
     LogNormal(Inf, Inf),
+    Beta(Inf),
     Normal(0, Inf),
-    Uniform(-Inf, Inf),
+    Uniform(-Inf, Inf), #this is the guy
     Poisson(3)
 ]
 
 for dist in distset
     @test_throws ArgumentError expectation(dist)
 end
+
+distset = [ # Compact dist
+    Uniform(1,2),
+    Arcsine(1,2),
+    Beta(1,1),
+    Truncated(LogNormal(1,1), 0., 10.),
+    ]
+
+for dist in distset
+    E = expectation(dist)
+    h(x) = 2*x
+    z = nodes(E)
+    @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
+    @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
+    @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
+
+    nodeList = nodes(E);
+    E = expectation(dist, nodeList)
+    @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
+    @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
+    @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
+
+    # E = expectation(Normal(), alg=QuantileRange)
+    # h(x) = 2*x
+    # z = nodes(E)
+    # @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
+    # @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
+    # @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
+end
+
 
 # Other errors.
 E = expectation(DiscreteUniform(1, 10))
