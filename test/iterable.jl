@@ -80,13 +80,6 @@ for dist in distset
     @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
     @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
     @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
-
-    # E = expectation(Normal(), alg=QuantileRange)
-    # h(x) = 2*x
-    # z = nodes(E)
-    # @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
-    # @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
-    # @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
 end
 
 
@@ -114,3 +107,19 @@ for dist in distset
     @test E2(x -> x) isa Number && true # no accuracy guarantees for the irregular grid
     @test abs(E2(x -> x^2) - μ^2 - σ^2) isa Number && true
 end
+
+# Quantile 
+
+distset = [
+    Uniform(1., 2.)
+]
+
+for dist in distset 
+    E = expectation(dist, alg=QuantileRange)
+    h(x) = 2*x
+    z = nodes(E)
+    @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
+    @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
+    @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
+end 
+
