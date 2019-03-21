@@ -64,7 +64,7 @@ distset = [ # Compact dist
     Uniform(1,2),
     Arcsine(1,2),
     Beta(1,1),
-    LogNormal(1,1),
+    Truncated(LogNormal(1,1), 0., 10.),
     ]
 
 for dist in distset
