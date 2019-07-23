@@ -96,7 +96,7 @@ The specific quadrature algorithms come from the [`FastGaussQuadrature.jl`](http
 
 If you would like to get in touch, please do one of the following:
 
-* Issue requests: Open an issue on the [package repository](https://github.com/econtoolkit/Expectations.jl) with the tag `feature request`. 
+* Issue requests: Open an issue on the [package repository](https://github.com/QuantEcon/Expectations.jl) with the tag `feature request`. 
 * Bugs: Same as above, but with the tag `bug`. 
 * Pull Request: We are always open to new functionality. If you have a feature you'd like to add (say, a new distribution or algorithm), once you prepare a PR with the feature and some tests, open it in the usual way. 
 * Other: You can reach out to Jesse Perla at [`jesse.perla@ubc.ca`](mailto:jesse.perla@ubc.ca) and Arnav Sood at [`arnav.sood@ubc.ca`](mailto:arnav.sood@ubc.ca)
