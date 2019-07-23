@@ -1,7 +1,7 @@
 using Documenter, Expectations 
 
 # Compile the raw documentation. 
-makedocs()
+makedocs(sitename = "Expectations.jl")
 
 # Push the documentation to the server.
 deploydocs(

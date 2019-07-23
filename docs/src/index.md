@@ -3,15 +3,17 @@
 The goal of this package is to provide an intuitive and mathematically sound interface for taking expectations of random variables
 and their higher-order functions (i.e., if ``X \sim N(0, 1)``, what is ``\mathbb{E}[\sin(X)]``?). 
 
-The underlying random variables are assumed to be distributions from [`Distributions.jl`](https://github.com/juliastats/distributions.jl). Currently, 
-only univariate distributions are supported. 
+The underlying random variables are assumed to be distributions from [`Distributions.jl`](https://github.com/juliastats/distributions.jl). Currently, only univariate distributions are supported. 
 
 ## Installation 
 
 To install, run: 
 
 ```@repl 1
-] add Expectations Distributions
+using Pkg 
+pkg"add Expectations Distributions"
+
+using Expectations, Distributions
 ```
 
 ## The Expectation Operator 
