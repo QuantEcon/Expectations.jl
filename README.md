@@ -1,4 +1,5 @@
 [![Travis status](https://travis-ci.org/QuantEcon/Expectations.jl.svg?branch=master)](https://travis-ci.org/QuantEcon/Expectations.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/i67ucrxj4yf1kdx8?svg=true)](https://ci.appveyor.com/project/arnavs/expectations-jl)
 [![codecov](https://codecov.io/gh/QuantEcon/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantEcon/Expectations.jl)
 
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/latest)
