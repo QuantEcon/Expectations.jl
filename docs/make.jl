@@ -7,4 +7,4 @@ makedocs(sitename = "Expectations.jl")
 deploydocs(
     deps   = Deps.pip("mkdocs", "python-markdown-math"),
     repo = "github.com/QuantEcon/Expectations.jl.git",
-)
+    forcepush = true)
