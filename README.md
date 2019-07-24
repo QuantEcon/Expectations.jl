@@ -2,7 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/i67ucrxj4yf1kdx8?svg=true)](https://ci.appveyor.com/project/arnavs/expectations-jl)
 [![codecov](https://codecov.io/gh/QuantEcon/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantEcon/Expectations.jl)
 
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/latest)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/dev)
 
 # Expectations
 
