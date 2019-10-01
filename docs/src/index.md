@@ -26,7 +26,7 @@ dist = Normal();
 E = expectation(dist)
 ```
 
-You can also choose and algorithms and default parameters (see below for list):
+You can also choose algorithms and default parameters (see below for list):
 
 ```@repl 1
 E = expectation(dist, Gaussian; n = 30) # Could have done expectation(dist) or expectation(dist; n = 30)
