@@ -3,6 +3,7 @@ distset = [
     Normal(1.23, 3.45),
     Exponential(2.12),
     Gamma(4.3),
+    Erlang(2, 3),
     Beta(2.123),
     LogNormal(4.5),
     DiscreteUniform(1, 10),
@@ -106,21 +107,21 @@ for dist in distset
     E2 = expectation(dist, grid2)
     @test E2(x -> x) isa Number # no accuracy guarantees for the irregular grid
     @test abs(E2(x -> x^2) - μ^2 - σ^2) isa Number
-    # Convenience method 
+    # Convenience method
     @test expectation(identity, dist, grid2) ≈ E2(x -> x)
 end
 
-# Quantile 
+# Quantile
 
 distset = [
     Uniform(1., 2.)
 ]
 
-for dist in distset 
+for dist in distset
     E = expectation(dist, QuantileRange)
     h(x) = 2*x
     z = nodes(E)
     @test E * h.(z) ≈ E(x -> 2*x) # Right-multiplying.
     @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
     @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
-end 
+end
