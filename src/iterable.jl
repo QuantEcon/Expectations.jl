@@ -198,11 +198,11 @@ end
 
 # Specific method for gamma distributions.
 """
-    function _expectation(dist::Gamma, alg::Type{Gaussian}; n = 32, kwargs...)
+    function _expectation(dist::Union{Gamma,Erlang}, alg::Type{Gaussian}; n = 32, kwargs...)
 
 Implements Gauss-Laguerre quadrature for Gamma distributions.
 """
-function _expectation(dist::Gamma, alg::Type{Gaussian}; n = 32, kwargs...)
+function _expectation(dist::Union{Gamma,Erlang}, alg::Type{Gaussian}; n = 32, kwargs...)
     α, θ = params(dist)
     (isfinite(θ) && isfinite(θ)) || throw(ArgumentError("The beta distribution supplied is malformed."))
     gl = gausslaguerre(n, α-1)
