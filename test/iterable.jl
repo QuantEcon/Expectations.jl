@@ -3,6 +3,7 @@ distset = [
     Normal(1.23, 3.45),
     Exponential(2.12),
     Gamma(4.3),
+    Gamma(2.2, 3.1,),
     Erlang(2, 3),
     Beta(2.123),
     LogNormal(4.5),
@@ -12,6 +13,7 @@ distset = [
 ]
 
 for dist in distset
+    println(dist)
     μ = mean(dist)
     σ = std(dist)
     # No convenience call.
@@ -23,7 +25,6 @@ for dist in distset
     @test expectation(x -> x, dist) ≈ μ
     @test expectation(x -> x^2, dist) - μ^2 ≈ σ^2
     @test expectation(x -> ((x - μ)/σ)^3, dist) + 1. ≈ skewness(dist) + 1.
-    println(dist)
     # Stress tests.
     # Many nodes.
     E2 = expectation(dist, n = 100)

@@ -189,7 +189,7 @@ Implements Gauss-Laguerre quadrature for Exponential distributions.
 """
 function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...)
     θ = inv(dist.θ) # To correct for the Distributions parametrization.
-    isfinite(θ) || throw(ArgumentError("The beta distribution supplied is malformed."))
+    isfinite(θ) || throw(ArgumentError("The Exponential distribution supplied is malformed."))
     gl = gausslaguerre(n)
     nodes = gl[1]./θ
     weights = gl[2]
@@ -204,9 +204,9 @@ Implements Gauss-Laguerre quadrature for Gamma distributions.
 """
 function _expectation(dist::Union{Gamma,Erlang}, alg::Type{Gaussian}; n = 32, kwargs...)
     α, θ = params(dist)
-    (isfinite(θ) && isfinite(θ)) || throw(ArgumentError("The beta distribution supplied is malformed."))
-    gl = gausslaguerre(n, α-1)
-    nodes = gl[1]./θ
+    (isfinite(α) && isfinite(θ)) || throw(ArgumentError("The Gamma distribution supplied is malformed."))
+    gl = gausslaguerre(n, α-1.)
+    nodes = gl[1].*θ
     weights = gl[2]./gamma(α)
     return IterableExpectation(nodes, weights)
 end
