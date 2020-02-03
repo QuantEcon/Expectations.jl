@@ -52,7 +52,7 @@ The computation of these weights and nodes is a literature in its own right. We 
 
 # Acknowledgements
 
-The authors gratefully acknowledge support from Patrick Mogensen, by allowing us to refer to his [DistQuads.jl](https://github.com/pkofod/DistQuads.jl) package.
+The authors gratefully acknowledge support from Patrick Mogensen, by allowing us to refer to his [DistQuads.jl](https://github.com/pkofod/DistQuads.jl) package for the backend calls to the quadrature library.
 
 The [QuantEcon](https://quantecon.org) organization, which supported this work, is a NumFocus Fiscally Sponsored Project currently funded primarily by the Alfred P. Sloan foundation.
 
