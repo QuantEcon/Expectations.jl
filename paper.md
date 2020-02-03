@@ -34,7 +34,7 @@ $$ \mathbb{E}[f(X)] = \int_{S}f(x) dG(x) $$
 
 Where $S$ is the _support_ of $X$, or the set of values for which $X$ is nonzero.
 
-The integral is what makes this quantity challenging to compute. A Monte Carlo method might approximate it by drawing a large sample of points $S = \{x_1, x_2, ..., x_N\}$, and then simply taking the average $\tilde{\mathbb{E}}[X] = \frac{1}{N} \sum_{i = 1}^N f(x_i)$.
+The integral is what makes this quantity challenging to compute. A Monte Carlo method might approximate it by drawing a large sample of points $S = \{x_1, x_2, ..., x_N\}$, and then simply taking the average $\tilde{\mathbb{E}}[f(X)] = \frac{1}{N} \sum_{i = 1}^N f(x_i)$.
 
 While the estimator $\tilde{\mathbb{E}}$ has several attractive statistical properties, Monte Carlo methods tend to be resource-intensive (one must draw a large enough sample, store it in memory, and compute the average.)
 
