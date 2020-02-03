@@ -9,8 +9,6 @@ authors:
   - name: Arnav Sood
     orcid: 0000-0003-0074-7908
     affiliation: 1
-  - name: Jesse Perla
-    affiliation: 1
 affiliations:
   - name: Vancouver School of Economics, Unversity of British Columbia
     index: 1
