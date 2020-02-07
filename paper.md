@@ -24,7 +24,7 @@ Julia's ``Distributions.jl`` [@distributions] package provides many random varia
 
 The ``Expectations.jl`` package addresses these weaknesses. By implementing custom Gaussian integration (also known as _quadrature_) schemes around well-known distributions, we provide fast and compact expectation operators. By making these callable objects, we allow these to be used as valid linear operators (acting on vectors, supporting scalar multiplication, etc.) Accuracy is not compromised; in testing, two pairs of 32-node vectors are sufficient to compute expectations to machine precision. For distributions without a custom quadrature rule, we give generic fallbacks.
 
-Current use of the package includes the well-known QuantEcon [Julia course](https://julia.quantecon.org), and the package has already attracted some community input (feature request, bug reports, etc.) 
+Current use of the package includes the well-known QuantEcon [Julia course](https://julia.quantecon.org), and the package has already attracted some community input (feature requests, bug reports, etc.) 
 
 # Mathematical and Computational Details
 
