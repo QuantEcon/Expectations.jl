@@ -33,7 +33,7 @@ for dist in distset
     @test E2(x -> x^2) - μ^2 ≈ σ^2
     @test E2(x -> ((x - μ)/σ)^3) + 1. ≈ skewness(dist) + 1. # To avoid comparisons to 0.0 exactly.
 end
-#
+
 # Linear operator behavior.
 distset = [
     DiscreteUniform(1., 10.),
