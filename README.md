@@ -13,15 +13,6 @@ pkg> add Expectations
 
 This is a package designed to simplify the process of taking expectations of functions of random variables. 
 
-### Random Variables 
-
-The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`).
-
-### Quadrature Algorithms
-
-We support different types of Gaussian quadrature (Gauss-Hermite, Gauss-Legendre, Gauss-Laguerre, etc.) based on the distribution, as well as some methods
-with user-defined nodes (e.g., trapezoidal integration).
-
 ### Expectation Operator
 
 The key object is the `expectation` function, which returns an operator:
@@ -44,3 +35,25 @@ x = nodes(E)
 f(x) = x^2
 E * f.(x) == dot(f.(x), weights(E))
 ```
+
+### Random Variables 
+
+The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`).
+
+### Quadrature Algorithms
+
+We support different types of Gaussian quadrature (Gauss-Hermite, Gauss-Legendre, Gauss-Laguerre, etc.) based on the distribution, as well as some methods with user-defined nodes (e.g., trapezoidal integration).
+
+We have rules for the following distributions: 
+
+* Normal 
+* ChiSq
+* LogNormal
+* Exponential
+* Beta
+* Gamma/Erlang
+* Continuous Univariate (compact; generic fallback)
+* Continuous Univariate (no restriction; approximates with quantile grid)
+* Discrete
+
+See docs for more info. 
