@@ -211,6 +211,19 @@ function _expectation(dist::Union{Gamma,Erlang}, alg::Type{Gaussian}; n = 32, kw
     return IterableExpectation(nodes, weights)
 end
 
+# Specific method for Chisq.
+"""
+    function _expectation(dist::Chisq, alg::Type{Gaussian}; n = 32, kwargs...)
+"""
+function _expectation(dist::Chisq, alg::Type{Gaussian}; n = 32, kwargs...)
+    ν = dist.ν # dist takes one integer parameter
+    isfinite(ν) || throw(ArgumentError("The Chisq distribution supplied is malformed."))
+    gl = gausslaguerre(n, ν/2 - 1)
+    nodes = gl[1].*2
+    weights = gl[2]./gamma(ν/2)
+    return IterableExpectation(nodes, weights)
+end
+
 #=
     Continuous iterable distributions (nodes supplied.)
 =#
