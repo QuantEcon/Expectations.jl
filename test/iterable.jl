@@ -8,6 +8,7 @@ distset = [
     Beta(2.123),
     LogNormal(4.5),
     DiscreteUniform(1, 10),
+    Chisq(3),
     Binomial(101, 0.45),
     Categorical([0.2, 0.35, 0.15, 0.3])
 ]
