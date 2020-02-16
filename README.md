@@ -4,8 +4,6 @@
 
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/dev)
 
-* Note, the list of supported distributions on the docs is out-of-date. Until we move away from Travis CI docs, see the list at the bottom of this page. 
-
 # Expectations
 
 Installation (v1.0 and up):
