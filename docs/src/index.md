@@ -78,7 +78,8 @@ Here is a list of currently supported distributions, along with keyword argument
 | Normal <: Continuous Univariate | Gauss-Hermite (...) | n = 30 | ... |
 | LogNormal <: ... | Gauss-Hermite (...) | n = 30 | ... |
 | Beta <: ... | Gauss-Jacobi (...) | n = 32 | ... |
-| ChiSq <: ... | Gauss-Laguerre (...) | n = 32 | ... | 
+| ChiSq <: ... | Gauss-Laguerre (...) | n = 32 | ... |
+| Uniform <: ... | Gauss-Legendre (...) | n = 30 | ... | 
 | Exponential <: ... | Gauss-Laguerre (...) | n = 32 | ... |
 | Gamma <: ... | Gauss-Laguerre (...) | n = 32 | ... |
 | Univariate | Trapezoidal <: ExplicitQuadratureAlgorithm | N/A | All nodes must be inside distribution's support. |

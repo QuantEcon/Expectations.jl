@@ -127,6 +127,20 @@ function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Quantile
     return IterableExpectation(nodes, weights)
 end
 
+"""
+    function _expectation(dist::Uniform, alg::Type{Gaussian}; n = 30, kwargs...)
+
+Implements Gauss-Legendre quadrature for the uniform distribution.
+"""
+function _expectation(dist::Uniform, alg::Type{Gaussian}; n = 30, kwargs...)
+    a, b = params(dist)
+    (isfinite(a) && isfinite(b)) || throw(ArgumentError("Both parameters must be finite."))
+    rawNodes, rawWeights = gausslegendre(n)
+    nodes = map(x -> (0.5(b-a))*x + (a+b)/2, rawNodes)
+    weights = map(x -> x * 1/2, rawWeights) # (result of doing 1/(b-a) * (b-a)/2)
+    return IterableExpectation(nodes, weights)
+end
+
 # Specific method for normal distributions.
 # Number of points was calibrated by trial.
 """
