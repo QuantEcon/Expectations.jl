@@ -6,10 +6,12 @@
 
 # Expectations
 
-Installation (v1.0 and up):
+Installation (for Julia v1.0 and up):
 ```julia
 pkg> add Expectations
 ```
+See [Pkg docs for more details](https://julialang.github.io/Pkg.jl/v1/managing-packages/#Adding-packages-1)
+
 
 This is a package designed to simplify the process of taking expectations of functions of random variables.
 
