@@ -8,14 +8,14 @@ tags:
 authors:
   - name: Patrick K Mogensen
     orcid: 0000-0002-4910-1932
-    affiliation: 2
+    affiliation: 1
   - name: Arnav Sood
     orcid: 0000-0003-0074-7908
-    affiliation: 1
+    affiliation: 2
 affiliations:
-  - name: Vancouver School of Economics, Unversity of British Columbia
-    index: 1
   - name: Julia Computing, Inc.
+    index: 1
+  - name: Vancouver School of Economics, Unversity of British Columbia
     index: 2
 date: 2 February 2020
 bibliography: paper.bib
@@ -59,9 +59,7 @@ The computation of these weights and nodes is a literature in its own right. We 
 
 # Acknowledgements
 
-The author gratefully acknowledges support from Patrick Kofod Mogensen, by allowing reference to his [DistQuads.jl](https://github.com/pkofod/DistQuads.jl) package for the underlying calls to the quadrature library.
-
-The [QuantEcon](https://quantecon.org) organization, which supported this work, is a NumFocus Fiscally Sponsored Project currently funded primarily by the Alfred P. Sloan foundation.
+The [QuantEcon](https://quantecon.org) organization, which partially supported this work, is a NumFocus Fiscally Sponsored Project currently funded primarily by the Alfred P. Sloan foundation.
 
 This paper benefited from the efforts of many people, including JOSS editor Viviane Pons, and volunteer referees.
 
