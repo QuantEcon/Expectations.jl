@@ -6,12 +6,17 @@ tags:
   - distributions
   - quadrature
 authors:
+  - name: Patrick K Mogensen
+    orcid: 0000-0002-4910-1932
+    affiliation: 2
   - name: Arnav Sood
     orcid: 0000-0003-0074-7908
     affiliation: 1
 affiliations:
   - name: Vancouver School of Economics, Unversity of British Columbia
     index: 1
+  - name: Julia Computing, Inc.
+    index: 2
 date: 2 February 2020
 bibliography: paper.bib
 ---
