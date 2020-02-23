@@ -6,7 +6,7 @@ function expectation(m::UnivariateMixture; kwargs...)
 end
 
 function (e::MixtureExpectation)(f::Function; kwargs...)
-    return dot(e.mixtureweights, [E(f) for E in e.expectations])
+    return dot(e.mixtureweights, [E(f; kwargs...) for E in e.expectations])
 end
 
 weights(e::MixtureExpectation) = e.mixtureweights
