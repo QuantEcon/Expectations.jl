@@ -1,8 +1,8 @@
-function expectation(m::UnivariateMixture; kwargs...) # uses the defaults for each dist. otherwise, you can manually construct expectations and glob them together
-    dists = components(m)
-    mixtureweights = probs(m)
-    expectations = [expectation(d; kwargs...) for d in dists]
-    return MixtureExpectation(expectations, mixtureweights)
+# uses the defaults for each dist.
+# otherwise, you can manually construct expectations and glob them together
+function expectation(m::UnivariateMixture; kwargs...)
+    expectations = [expectation(d; kwargs...) for d in components(m)]
+    return MixtureExpectation(expectations, probs(m))
 end
 
 function (e::MixtureExpectation)(f::Function; kwargs...)
@@ -11,6 +11,6 @@ end
 
 weights(e::MixtureExpectation) = e.mixtureweights
 expectations(e::MixtureExpectation) = e.expectations
-# *(e::MixtureExpectation, h::AbstractArray) =
-# *(r::Real, e::IterableExpectation) =  IterableExpectation(nodes(e), r * weights(e)) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
-# expectation(f::Function, m::UnivariateMixture) = 
+expectation(f::Function, m::UnivariateMixture; kwargs...) = dot(probs(m), [expectation(f, dist; kwargs...) for dist in components(m)])
+*(r::Real, e::MixtureExpectation) = MixtureExpectation(r*expectations(e), weights(e))
+*(e::MixtureExpectation, h::AbstractArray) = dot(weights(e), [E*h for E in expectations(e)])

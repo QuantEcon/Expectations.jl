@@ -15,6 +15,6 @@ include("mixturemodels.jl")
 
 # Export
 export expectation, Expectation, IterableExpectation, Gaussian, Trapezoidal, FiniteDiscrete, QuadratureAlgorithm, ExplicitQuadratureAlgorithm, nodes, weights, QuantileRange
-export MixtureExpectation
+export MixtureExpectation, expectations
 
 end # module
