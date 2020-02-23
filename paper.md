@@ -6,16 +6,16 @@ tags:
   - distributions
   - quadrature
 authors:
-  - name: Patrick K Mogensen
-    orcid: 0000-0002-4910-1932
-    affiliation: 1
   - name: Arnav Sood
     orcid: 0000-0003-0074-7908
+    affiliation: 1
+  - name: Patrick K Mogensen
+    orcid: 0000-0002-4910-1932
     affiliation: 2
 affiliations:
-  - name: Julia Computing, Inc.
-    index: 1
   - name: Vancouver School of Economics, Unversity of British Columbia
+    index: 1
+  - name: Julia Computing, Inc.
     index: 2
 date: 2 February 2020
 bibliography: paper.bib
@@ -27,7 +27,7 @@ Many statistical problems require taking an expectation of some function $f(x)$,
 
 Julia's ``Distributions.jl`` [@distributions] package provides many random variable objects, but taking expectations is still a laborious process. Traditional approaches include Monte Carlo simulation (slow, and potentially inaccurate), or custom numerical integration (inaccessible for non-statisticians.) And both of these approaches fail to capitalize on one of Julia's key features: the similarity between math and Julia code.
 
-The ``Expectations.jl`` package addresses these weaknesses. By implementing custom Gaussian integration (also known as _quadrature_) schemes around well-known distributions, we provide fast and compact expectation operators. By making these callable objects, we allow these to be used as valid linear operators (acting on vectors, supporting scalar multiplication, etc.) Accuracy is not compromised; in testing, two pairs of 32-node vectors are sufficient to compute expectations to machine precision. For distributions without a custom quadrature rule, we give generic fallbacks.
+The ``Expectations.jl`` package addresses these weaknesses. By implementing custom Gaussian integration (also known as _quadrature_) schemes around well-known distributions, we provide fast and compact expectation operators. By making these callable objects, we allow these to be used as valid linear operators (acting on vectors, supporting scalar multiplication, etc.) Accuracy is not compromised; in testing, two pairs of 32-node vectors are sufficient to compute expectations to machine precision. For distributions without a custom quadrature rule, we give generic fallbacks. We also support univariate mixture models, by taking a weighted average over the component expectations. 
 
 Current use of the package includes the well-known QuantEcon [Julia course](https://julia.quantecon.org), and the package has already attracted some community input (feature requests, bug reports, etc.) 
 

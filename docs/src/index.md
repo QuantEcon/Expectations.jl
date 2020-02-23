@@ -66,6 +66,34 @@ The above behavior, in some sense, puts the "operator" in "expectation operator"
 
 There are some situations where we are forced to use a specific set of nodes. In those situations, `E = expectation(dist, nodes)` will create the relevant object.
 
+## Mixture Models
+
+We also have support for univariate [mixture models](https://juliastats.org/Distributions.jl/latest/mixture). The `MixtureExpectation` type is a struct with two fields:
+
+* `expectations`, which is a list of `IterableExpectation` objects.
+
+* `mixtureweights`, which is the mixing probabilities over the various model components.
+
+The mixture models are constructed using the **default settings** for each component distribution. (It still accepts kwargs, which are applied to each.)
+
+```@repl 1
+d = MixtureModel(Uniform(), Normal(), Gamma());
+E = expectation(d; n = 30); # n = 30 nodes for each
+@show typeof(E)
+E(x -> abs(x))
+```
+
+If you want to change this, you should construct each distribution separately, and then chain them together.
+
+```@repl 1
+E1 = expectation(Uniform())
+E2 = expectation(Normal())
+E3 = expectation(Gamma())
+
+E = MixtureExpectation([E1, E2, E3], [1/3, 1/3, 1/3])
+E(x -> abs(x))
+```
+
 ## Supported Distributions, Algorithms, Keywords, and Defaults
 
 Here is a list of currently supported distributions, along with keyword arguments and their defaults.  
@@ -79,7 +107,7 @@ Here is a list of currently supported distributions, along with keyword argument
 | LogNormal <: ... | Gauss-Hermite (...) | n = 30 | ... |
 | Beta <: ... | Gauss-Jacobi (...) | n = 32 | ... |
 | ChiSq <: ... | Gauss-Laguerre (...) | n = 32 | ... |
-| Uniform <: ... | Gauss-Legendre (...) | n = 30 | ... | 
+| Uniform <: ... | Gauss-Legendre (...) | n = 30 | ... |
 | Exponential <: ... | Gauss-Laguerre (...) | n = 32 | ... |
 | Gamma <: ... | Gauss-Laguerre (...) | n = 32 | ... |
 | Univariate | Trapezoidal <: ExplicitQuadratureAlgorithm | N/A | All nodes must be inside distribution's support. |
