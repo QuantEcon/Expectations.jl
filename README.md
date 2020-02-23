@@ -42,7 +42,7 @@ E * f.(x) == dot(f.(x), weights(E))
 
 The underlying distributions are objects from `Distributions.jl` (currently `<:UnivariateDistribution`).
 
-**Starting with 1.4.0, we also support mixture models.**
+**Starting with 1.3.0, we also support mixture models.**
 
 ### Quadrature Algorithms
 
