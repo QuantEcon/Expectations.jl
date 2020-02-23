@@ -77,7 +77,7 @@ We also have support for univariate [mixture models](https://juliastats.org/Dist
 The mixture models are constructed using the **default settings** for each component distribution. (It still accepts kwargs, which are applied to each.)
 
 ```@repl 1
-d = MixtureModel(Uniform(), Normal(), Gamma());
+d = MixtureModel([Uniform(), Normal(), Gamma()]);
 E = expectation(d; n = 30); # n = 30 nodes for each
 @show typeof(E)
 E(x -> abs(x))
