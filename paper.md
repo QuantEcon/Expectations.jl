@@ -38,17 +38,17 @@ There are analogous packages in other programming languages. For example, in Pyt
 The advantages of our package are twofold. First, because of Julia's multiple dispatch, we can build distribution and expectation objects using any numeric types that implement basic arithmetic functions. For example, if we import the ``Measurements.jl`` package, the following works without any modification:
 
 ```
-julia> μ, σ = 0.5 ± 0.01, 1.0 ± 0.01
+julia> mu, sigma = 0.5 ± 0.01, 1.0 ± 0.01
 (0.5 ± 0.01, 1.0 ± 0.01)
 
-julia> d = Normal(μ, σ);
+julia> d = Normal(mu, sigma);
 
 julia> E = expectation(d);
 
-julia> E(x -> (x - μ)^2)
+julia> E(x -> (x - mu)^2)
 1.0 ± 0.02
 
-julia> σ^2
+julia> sigma^2
 1.0 ± 0.02
 ```
 
