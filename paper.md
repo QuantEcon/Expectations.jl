@@ -70,7 +70,7 @@ julia> ForwardDiff.derivative(f, 2)
 
 A corollary is that expectations can be embedded into things like machine learning training loops.
 
-As for PPLs, the notational clarity and high extensibility of our package make future integration with Turing quite promising. We already support expectations of things like ``TransformedDistribution`` objects from Turing. And our focus on mathematically faithful behavior (scalar multiplication, etc.) is in the spirit of a high-level, user-facing PPL. 
+On the second point, our focus on clean notation and mathematically faithful behavior (scalar multiplication, etc.) is in the spirit of a high-level, user-facing PPL. Our generic fallback method supports any compact, finite-parameter subtype of ``UnivariateDistribution`` which supports parameter extraction (e.g., ``maximum``, ``minimum``, ``params``). We are working on adding support for various transformed distribution objects from (e.g.) Turing, at which point closer integration will be possible.
 
 # Mathematical and Computational Details
 
