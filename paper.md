@@ -52,7 +52,7 @@ julia> sigma^2
 1.0 ± 0.02
 ```
 
-Second, because we have designed our expectation operators as bona fide _operators_ (instead of functions), they support mathematical behavior (like scalar multiplication and action on a vector) we have not seen elswhere.
+Second, because we have designed our expectation operators as bona fide _operators_ (instead of functions), they support mathematical behavior (like scalar multiplication and action on a vector) we have not seen elsewhere.
 
 # Additional Julia Details
 
