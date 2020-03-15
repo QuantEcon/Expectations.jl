@@ -14,3 +14,5 @@ expectations(e::MixtureExpectation) = e.expectations
 expectation(f::Function, m::UnivariateMixture; kwargs...) = dot(probs(m), [expectation(f, dist; kwargs...) for dist in components(m)])
 *(r::Real, e::MixtureExpectation) = MixtureExpectation(r*expectations(e), weights(e))
 # *(e::MixtureExpectation, h::AbstractArray) = dot(weights(e), [E*h for E in expectations(e)])
+import Base.+
++(expectations::Expectation...) = MixtureExpectation(expectations, ones(length(expectations)))
