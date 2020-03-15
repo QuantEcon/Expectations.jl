@@ -24,6 +24,14 @@ for dist in distset
     @test E2(x -> x^2) - μ^2 ≈ σ^2
 end
 
+# Addition of expectations
+e1 = expectation(Normal())
+e2 = expectation(Uniform())
+e3 = expectation(Gamma())
+
+@test ((e1 + e2) + e3)(identity) == ((e1 + e2) + e3)(identity) == (e1 + e2 + e3)(identity)
+@test (e1 + e2 + e3)(x -> x^2) ≈ 3.333333333333342
+
 # Linear operator behavior.
 
 # Error handling.
