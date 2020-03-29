@@ -4,7 +4,7 @@ module Expectations
 
 # Load external dependencies.
 using Compat, FastGaussQuadrature
-using Compat.LinearAlgebra
+using LinearAlgebra
 using SpecialFunctions
 using Distributions
 
