@@ -129,7 +129,7 @@ If you would like to get in touch, please do one of the following:
 * Issue requests: Open an issue on the [package repository](https://github.com/QuantEcon/Expectations.jl) with the tag `feature request`.
 * Bugs: Same as above, but with the tag `bug`.
 * Pull Request: We are always open to new functionality. If you have a feature you'd like to add (say, a new distribution or algorithm), once you prepare a PR with the feature and some tests, open it in the usual way.
-* Other: You can reach out to Arnav Sood at [`arnav.sood@ubc.ca`](mailto:arnav.sood@ubc.ca)
+* Other: You can reach out to Arnav Sood at [`misc@arnavsood.com`](mailto:misc@arnavsood.com)
 * Citation: If this package was helpful in your research work, you may consider citing the package in whatever method is appropriate for your field.
 
 [^1]: This is a quadrature scheme written by [Spencer Lyon](http://spencerlyon.com/) (PhD. NYU) as part of the [`QuantEcon`](https://quantecon.org/) project. Used with permission.
