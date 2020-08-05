@@ -9,11 +9,11 @@ FastGaussQuadrature = "442a2c76-b920-505d-bb47-c5924d526838"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
-julia = "1"
-SpecialFunctions = "0.8"
+Compat = "3.13"
+Distributions = "0.23"
 FastGaussQuadrature = "0.4"
-Compat = "3.2"
-Distributions = "0.22"
+SpecialFunctions = "0.10"
+
 
 [extras]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
