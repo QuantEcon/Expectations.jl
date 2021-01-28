@@ -7,9 +7,14 @@
 
 Implements callable behavior for `IterableExpectation` objects.
 """
-function (e::IterableExpectation{NT,WT})(f::Function; kwargs...) where {NT,WT}
-    applicable(f, rand(nodes(e))) || throw(ArgumentError("The function doesn't accept elements from the distribution's support."))
-    return dot(f.(nodes(e)), weights(e))
+function (e::IterableExpectation{NT,WT})(f::Function) where {NT,WT}
+    nvec, wvec = nodes(e), weights(e)
+    E = f(nvec[1]) * wvec[1]
+    @inbounds for i in 2:length(nvec)
+        n, w = nvec[i], wvec[i]
+        E += f(n) * w
+    end
+    return E
 end
 
 # Getters for the object.
