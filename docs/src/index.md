@@ -112,6 +112,15 @@ Here is a list of currently supported distributions, along with keyword argument
 | Gamma <: ... | Gauss-Laguerre (...) | n = 32 | ... |
 | Univariate | Trapezoidal <: ExplicitQuadratureAlgorithm | N/A | All nodes must be inside distribution's support. |
 
+###
+
+Some unbounded distributions are currently not supported (e.g., Poisson). Depending on your use case truncating may be a feasible option:
+```@repl
+E = expectation(Pareto()) # Throws error
+E = expectation(truncated(Pareto(),0.0,1000.0)) # Truncated Pareto on [0,1000]
+```
+See `Distributions.truncated` for more. Of course, truncating the distribution also affects its properties.
+
 ## Mathematical Details and References
 
 The specific quadrature algorithms come from the [`FastGaussQuadrature.jl`](https://github.com/ajt60gaibb/FastGaussQuadrature.jl) library, which is maintained by [Alex Townsend](https://github.com/ajt60gaibb) of Cornell University. Much of the quadrature code came from the [`DistQuads.jl`](https://github.com/pkofod/DistQuads.jl) library, which is maintained by [Patrick K. Mogensen](https://github.com/pkofod) at the University of Copenhagen. In addition, there are some objects contributed by individual users; see docstring for citations.
