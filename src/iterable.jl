@@ -1,4 +1,4 @@
-#= 
+#=
     All iterable expectations. =#
 
 # Callable behavior for the object. Parameters because we cannot add methods to an abstract type.
@@ -53,7 +53,7 @@ Implements left-multiplication of an `IterableExpectation` by a real scalar.
 *(r::Real, e::IterableExpectation) =  IterableExpectation(nodes(e), r * weights(e)) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
 
 
-#= 
+#=
     Discrete iterable expectations. =#
 
 # Constructors for the object.
@@ -77,7 +77,7 @@ function _expectation(dist::DiscreteUnivariateDistribution, alg::Type{FiniteDisc
     return IterableExpectation(ourSupport, ourWeights);
 end
 
-#= 
+#=
     Continuous iterable expectations (no nodes supplied.) =#
 
 # General catchall behavior --> Gauss-Legendre quadrature.
@@ -96,7 +96,7 @@ Implements Gauss-Legendre quadrature for continuous univariate distributions for
 function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Gaussian}; n=500, kwargs...)
     a = minimum(dist)
     b = maximum(dist)
-    (a > -Inf && b < Inf) || throw(ArgumentError("The distribution must be defined on a compact interval."))
+    (a > -Inf && b < Inf) || throw(ArgumentError("The distribution must be defined on a compact interval. If applicable, bound the distribution by truncating, e.g., expectation(truncated(Pareto(),0.0,1000.0)"))
     rawNodes, rawWeights = gausslegendre(n)
     # Transform nodes to proper interval.
     nodes = map(x -> (0.5(b - a)) * x + (a + b) / 2, rawNodes)
@@ -240,7 +240,7 @@ function _expectation(dist::Chisq, alg::Type{Gaussian}; n=32, kwargs...)
     return IterableExpectation(nodes, weights)
 end
 
-#= 
+#=
     Continuous iterable distributions (nodes supplied.) =#
 
 # Dispatcher.
@@ -286,7 +286,7 @@ Overloads trapezoidal integration for cases where the user-defined grids are reg
     return IterableExpectation(nodes, allWeights)
 end
 
-#= 
+#=
     Convenience functions. =#
 """
     expectation(f::Function, dist::DiscreteUnivariateDistribution, alg::Type{FiniteDiscrete} = FiniteDiscrete; kwargs...) = expectation(dist, alg; kwargs...)(f)

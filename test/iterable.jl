@@ -128,3 +128,12 @@ for dist in distset
     @test weights(2E) ≈ 2*weights(E) # Left-multiplying.
     @test 3E*z ≈ (3E) * z ≈ 3*(E * z) # Linearity.
 end
+
+## Truncated distrubtions
+@test_throws ArgumentError E = expectation(Pareto())
+# Mean of pareto is (α * θ / (α - 1)). If we bound a Pareto at a high number we should get (close to) the analytical mean
+α = 5.0
+θ = 1.0
+righttrunc = 10000
+E = expectation(truncated(Pareto(α,θ),nothing,righttrunc),n=1000) # Right truncated Pareto at 1000
+@test E(x->x) ≈ α*θ/(α-1)
