@@ -117,7 +117,7 @@ function _expectation(dist::ContinuousUnivariateDistribution, alg::Type{Quantile
     # check nondegeneracy.
     all(isfinite.(params(dist))) || throw(ArgumentError("Distribution must be nondegenerate."))
     # _quadnodes in the QuantEcon.
-    quantiles = Compat.range(q0, stop=qN, length=n)
+    quantiles = range(q0, stop=qN, length=n)
     nodes = quantile.(Ref(dist), quantiles)
     # qnwdist in the QuantEcon.
     weights = zeros(n)
@@ -271,11 +271,11 @@ end
 
 # Trapezoidal for regular.
 """
-    @compat function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
+    function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
 
 Overloads trapezoidal integration for cases where the user-defined grids are regular.
 """
-@compat function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
+function _expectation(dist, nodes::AbstractRange, alg::Type{Trapezoidal}; kwargs...)
     isfinite(minimum(dist)) && isfinite(maximum(dist)) || throw(ArgumentError("The distribution must be defined on a compact interval."))
     (first(nodes) >= minimum(dist)) && (last(nodes) <= maximum(dist)) || throw(ArgumentError("The nodes exceed the distribution's support."))
     M = length(nodes)
