@@ -12,6 +12,11 @@ end
 weights(e::MixtureExpectation) = e.mixtureweights
 expectations(e::MixtureExpectation) = e.expectations
 expectation(f::Function, m::UnivariateMixture; kwargs...) = dot(probs(m), [expectation(f, dist; kwargs...) for dist in components(m)])
+# Left-multiplying an expectation by a scalar.
+"""
+    *(r::Real, e::MixtureExpectation) =  IterableExpectation(nodes(e), r * weights(e))
+Implements left-multiplication of an `IterableExpectation` by a real scalar.
+"""
 *(r::Real, e::MixtureExpectation) = MixtureExpectation(r * expectations(e), weights(e))
 # *(e::MixtureExpectation, h::AbstractArray) = dot(weights(e), [E*h for E in expectations(e)])
 import Base.+
@@ -26,9 +31,4 @@ Implements the right-application of an `MixtureExpectation` by a vector of value
 """
 *(e::MixtureExpectation, h::AbstractArray) = dot(map(x -> x * h, expectations(e)), weights(e))
 
-# Left-multiplying an expectation by a scalar.
-"""
-    *(r::Real, e::MixtureExpectation) =  IterableExpectation(nodes(e), r * weights(e))
-Implements left-multiplication of an `IterableExpectation` by a real scalar.
-"""
-*(r::Real, e::MixtureExpectation) = MixtureExpectation(r * expectations(e), weights(e)) # Necessary because, for example, multiplying UnitRange * 2 = StepRange
+
