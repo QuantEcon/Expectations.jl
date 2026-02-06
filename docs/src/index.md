@@ -130,6 +130,7 @@ The specific quadrature algorithms come from the [`FastGaussQuadrature.jl`](http
 * Discontinuous or nondifferentiable functions (even if the function is a.e.-differentiable)
 * Periodic/oscillatory functions with a high frequency
 * Extremely large numbers of quadrature nodes, which may lead to vanishingly small weights.
+* **Gauss-Laguerre for Exponential/Gamma distributions**: The default Gauss-Laguerre quadrature for `Exponential` and `Gamma` distributions places most nodes in the tail of the distribution rather than near the mean. For functions where important variation occurs near the mean or mode (e.g., step functions, indicator functions, or functions with rapid changes near the center of the distribution), this can lead to significant errors (10% or more). In such cases, consider using `QuantileRange` quadrature instead: `expectation(dist, QuantileRange, n=50)`, which distributes nodes more evenly across the probability mass.
 
 ## Contact
 
