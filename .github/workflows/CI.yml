@@ -1,7 +1,14 @@
+# from https://discourse.julialang.org/t/easy-workflow-file-for-setting-up-github-actions-ci-for-your-julia-package/49765
+
 name: CI
 on:
-  - push
-  - pull_request
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+    tags: '*'
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
@@ -10,14 +17,14 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.6'
-          - '1'
+          - 'min' # the minimum Julia version that your package supports
+          - '1'   # will automatically expand to the latest stable 1.x release of Julia.
         os:
           - ubuntu-latest
         arch:
           - x64
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.version }}
@@ -34,3 +41,10 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
+      - uses: julia-actions/julia-processcoverage@v1
+      - uses: codecov/codecov-action@v7
+        with:
+          file: lcov.info
+          # NOTE: you need to add the token to Github secrets, see
+          # https://docs.codecov.com/docs/adding-the-codecov-token
+          token: ${{ secrets.CODECOV_TOKEN }}
