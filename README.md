@@ -1,6 +1,5 @@
 [![CI](https://github.com/QuantEcon/Expectations.jl/workflows/CI/badge.svg)](https://github.com/QuantEcon/Expectations.jl/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/QuantEcon/Expectations.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/QuantEcon/Expectations.jl)
-
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantEcon.github.io/Expectations.jl/dev)
 
 # Expectations
