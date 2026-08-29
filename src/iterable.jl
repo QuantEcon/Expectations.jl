@@ -202,6 +202,23 @@ end
     function _expectation(dist::Exponential, alg::Type{Gaussian}; n = 32, kwargs...)
 
 Implements Gauss-Laguerre quadrature for Exponential distributions.
+
+# Notes
+
+Gauss-Laguerre quadrature is optimal for integrands that behave like polynomials
+times e^(-x). However, for Exponential distributions, this results in most nodes
+being placed in the tail rather than near the mean. For example, with n=32 nodes,
+only about 9% of nodes are below the mean.
+
+This can lead to poor accuracy (errors of 10% or more) for functions where important
+variation occurs near the mean or mode, such as:
+- Step functions or indicator functions
+- Functions with rapid changes near the center of the distribution
+- Discontinuous functions
+
+For such functions, consider using QuantileRange quadrature instead, which distributes
+nodes more evenly across the probability mass:
+    E = expectation(dist, QuantileRange, n=50)
 """
 function _expectation(dist::Exponential, alg::Type{Gaussian}; n=32, kwargs...)
     θ = inv(dist.θ) # To correct for the Distributions parametrization.
@@ -217,6 +234,15 @@ end
     function _expectation(dist::Union{Gamma,Erlang}, alg::Type{Gaussian}; n = 32, kwargs...)
 
 Implements Gauss-Laguerre quadrature for Gamma distributions.
+
+# Notes
+
+Similar to the Exponential case, Gauss-Laguerre quadrature places most nodes
+in the tail of the distribution. This can lead to poor accuracy for functions
+where important variation occurs near the mean or mode.
+
+For such functions, consider using QuantileRange quadrature instead:
+    E = expectation(dist, QuantileRange, n=50)
 """
 function _expectation(dist::Union{Gamma,Erlang}, alg::Type{Gaussian}; n=32, kwargs...)
     α, θ = params(dist)
